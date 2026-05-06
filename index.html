@@ -240,40 +240,45 @@
   .q-sender-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--highlight); }
   .q-sender { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-title); font-weight: 600;}
 
- /* ── SLIDE 10: GAMBAR DI ATAS, TEKS DI BAWAH (WHITE SPACE) ── */
+ /* ── SLIDE 10: GAMBAR KARTU + TEKS BAWAH (TIDAK TERPOTONG) ── */
 #slide-10 {
   background: var(--bg-main);
   display: flex;
   flex-direction: column;
-  align-items: stretch;
+  align-items: center;                  /* kartu gambar di tengah */
   justify-content: flex-start;
-  padding: calc(max(24px, env(safe-area-inset-top)) + 10px) 0 100px;  /* atas & bawah aman */
-  overflow: hidden;
+  padding: calc(max(24px, env(safe-area-inset-top)) + 10px) 0 0;
+  overflow-y: auto;                     /* kalau konten terlalu tinggi, bisa di‑scroll */
+  -webkit-overflow-scrolling: touch;
 }
 
-/* Hapus margin/padding dari .letter-row agar murni kolom */
+/* Hapus margin/padding default .letter-row */
 .letter-row {
   display: flex;
   flex-direction: column;
+  align-items: center;
   width: 100%;
-  height: auto;
-  margin: 0;
+  max-width: 430px;
+  margin: 0 auto;
 }
 
-/* Bagian gambar – penuh lebar, tinggi menyesuaikan aspek rasio */
+/* Kartu pembungkus gambar */
 .letter-right {
-  width: 100%;
+  width: calc(100% - 32px);            /* beri jarak dari tepi */
+  margin: 16px 16px 0;
   flex-shrink: 0;
-  background: #fff; /* fallback kalau gambar gagal */
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  overflow: hidden;                    /* sudut foto mengikuti border-radius */
 }
 
 .letter-photo {
   width: 100%;
   height: auto;
-  display: block;              /* hilangkan celah bawah gambar */
-  object-fit: contain;         /* tampilkan utuh tanpa potong, aman untuk non‑portrait */
-  border-radius: 0;            /* rata tanpa lengkungan */
-
+  display: block;
+  object-fit: cover;                   /* isi kartu dengan proporsi baik */
+  border-radius: 20px 20px 0 0;        /* selaras dengan kartu, bawah tidak perlu melengkung jika */
   /* Animasi side‑impact */
   opacity: 0;
   transform: translateX(40px);
@@ -286,16 +291,18 @@
   transform: translateX(0);
 }
 
-/* Area teks di bawah gambar – latar putih bersih */
+/* Area teks di bawah kartu gambar – putih polos, cukup ruang bawah */
 .letter-left {
-  flex: 1;                     /* isi sisa ruang di bawah gambar */
-  background: #FFFFFF;         /* putih polos */
-  padding: 30px 24px 40px;
+  width: 100%;
+  max-width: 430px;
+  background: #FFFFFF;
+  padding: 28px 24px 90px;            /* padding‑bawah besar agar tidak tertutup music player */
   color: var(--text-body);
   text-align: left;
+  flex-shrink: 0;
 }
 
-/* Kembalikan warna teks ke palet asli (hijau gelap) */
+/* Kembalikan warna teks hijau, tanpa bayangan */
 .letter-left,
 .letter-greeting,
 .letter-body,
@@ -303,11 +310,11 @@
 .center-heart,
 .letter-sig,
 .letter-date {
-  color: inherit;              /* warisi dari .letter-left */
+  color: inherit;
   text-shadow: none;
 }
 
-/* Gaya spesifik per elemen */
+/* Spesifik gaya */
 .letter-greeting {
   font-family: 'Cormorant Garamond', serif;
   font-size: 15px;
@@ -333,7 +340,7 @@
 
 .center-heart {
   font-size: 20px;
-  color: var(--highlight) !important; /* merah muda tetap */
+  color: var(--highlight) !important;
   margin: 12px 0 8px;
 }
 
@@ -353,6 +360,12 @@
   text-transform: uppercase;
   color: var(--text-muted);
   margin-top: 4px;
+}
+
+/* Animasi teks */
+.letter-left.anim-in {
+  animation: fadeUp 0.5s cubic-bezier(0.22,1,0.36,1) both;
+  animation-delay: 0.2s;
 }
 
 /* Animasi fadeUp untuk teks tetap jalan */
