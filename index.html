@@ -221,8 +221,27 @@
   #slide-8 { background: var(--bg-main); }
   .phrase-bg-art { position: absolute; inset: 0; background: radial-gradient(ellipse at 20% 80%, rgba(240,158,140,0.1), transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(127,161,137,0.1), transparent 50%); }
   .phrase-list { display: flex; flex-direction: column; gap: 14px; flex: 1; justify-content: center; z-index: 2; position: relative;}
-  .phrase-chip { display: inline-flex; align-items: center; gap: 10px; background: var(--bg-card); border: 1px solid var(--accent-soft); border-radius: 100px; padding: 10px 16px; font-size: 12px; color: var(--text-title); box-shadow: 0 4px 12px rgba(0,0,0,0.02); font-weight: 600;}
-  .phrase-chip .pill-count { background: var(--accent-soft); color: var(--text-title); border-radius: 100px; padding: 2px 8px; font-size: 10px; }
+  .phrase-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--accent-soft);
+  border-radius: 100px;
+  padding: 12px 20px;          /* sebelumnya 10px 16px */
+  font-size: 14px;             /* sebelumnya 12px */
+  color: var(--text-title);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+  font-weight: 600;
+}
+
+.phrase-chip .pill-count {
+  background: var(--accent-soft);
+  color: var(--text-title);
+  border-radius: 100px;
+  padding: 4px 10px;           /* sebelumnya 2px 8px */
+  font-size: 12px;             /* sebelumnya 10px */
+}
   .phrase-meaning { font-size: 11px; color: var(--text-muted); font-weight: 400; padding-left: 16px; margin-top: 4px; font-style: italic; }
   .phrase-row { display: flex; flex-direction: column; align-items: flex-start; }
 
@@ -525,12 +544,14 @@
           <div class="num-card"><div class="num-big">423</div><div class="num-unit">pesan</div><div class="num-desc">Hari paling cerewet — 15 April</div></div>
           <div class="num-card"><div class="num-big">47</div><div class="num-unit">"makasih"</div><div class="num-desc">Syukur tak pernah perlu alasan</div></div>
           <div class="num-card wide">
-            <div class="num-unit" style="margin-bottom:4px; color:var(--text-title);">Waktu favorit — pagi dan malam</div>
+            <div class="num-unit" style="margin-bottom:6px; color:var(--text-title);">Waktu favorit — pagi dan malam</div>
             <div class="mini-chart" id="hourChart"></div>
-            <div style="display:flex;justify-content:space-between;margin-top:4px;">
-              <span style="font-size:10px;color:var(--text-muted);">05.00</span>
-              <span style="font-size:10px;color:var(--text-muted);">12.00</span>
-              <span style="font-size:10px;color:var(--text-muted);">20.00</span>
+            <div style="display:flex; justify-content:space-between; margin-top:6px; padding:0 2px;">
+              <span style="font-size:9px; color:var(--text-muted);">00</span>
+              <span style="font-size:9px; color:var(--text-muted);">06</span>
+              <span style="font-size:9px; color:var(--text-muted);">12</span>
+              <span style="font-size:9px; color:var(--text-muted);">18</span>
+              <span style="font-size:9px; color:var(--text-muted);">23</span>
             </div>
           </div>
         </div>
@@ -800,7 +821,7 @@
   }
 
   // ── GRAFIK MINI ──────────────────────────────
-  const hourData = [248,431,782,472,547,121,127,401,184,63,180,233,268,274,934,1018,553,14,1,5,5,0];
+  const hourData = [248,431,782,472,547,121,127,401,184,63,180,233,268,274,934,1018,553,14,1,5,5,0, 0, 0]; // 24 jam
   function buildHourChart() {
     const c = document.getElementById('hourChart');
     if (!c || c.children.length) return;
