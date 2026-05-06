@@ -240,31 +240,41 @@
   .q-sender-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--highlight); }
   .q-sender { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-title); font-weight: 600;}
 
- /* ── SLIDE 10: GAMBAR PENUH + TEKS DI ATAS (TANPA KARTU) ── */
+ /* ── SLIDE 10: GAMBAR DI ATAS, TEKS DI BAWAH (WHITE SPACE) ── */
 #slide-10 {
-  position: relative;
   background: var(--bg-main);
-  overflow: hidden;
   display: flex;
-  align-items: flex-end;              /* teks menempel ke bawah */
+  flex-direction: column;
+  align-items: stretch;
   justify-content: flex-start;
-  padding: 0 20px 100px;              /* aman dari music player */
+  padding: calc(max(24px, env(safe-area-inset-top)) + 10px) 0 100px;  /* atas & bawah aman */
+  overflow: hidden;
 }
 
-/* Foto full‑screen absolute */
+/* Hapus margin/padding dari .letter-row agar murni kolom */
+.letter-row {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+  margin: 0;
+}
+
+/* Bagian gambar – penuh lebar, tinggi menyesuaikan aspek rasio */
 .letter-right {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
+  width: 100%;
+  flex-shrink: 0;
+  background: #fff; /* fallback kalau gambar gagal */
 }
 
 .letter-photo {
   width: 100%;
-  height: 100%;
-  object-fit: cover;                  /* penuh, tanpa distorsi */
-  display: block;
+  height: auto;
+  display: block;              /* hilangkan celah bawah gambar */
+  object-fit: contain;         /* tampilkan utuh tanpa potong, aman untuk non‑portrait */
+  border-radius: 0;            /* rata tanpa lengkungan */
 
-  /* Animasi meluncur + fade */
+  /* Animasi side‑impact */
   opacity: 0;
   transform: translateX(40px);
   transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.15s,
@@ -276,21 +286,16 @@
   transform: translateX(0);
 }
 
-/* Kontainer teks – tidak ada background kartu */
+/* Area teks di bawah gambar – latar putih bersih */
 .letter-left {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  max-width: 360px;
-  padding: 0 4px;
-
-  /* Gradien hitam tipis di bawah untuk melindungi teks */
-  background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.2) 70%, transparent 100%);
-  border-radius: 16px 16px 16px 16px;  /* sudut halus (opsional) */
-  padding: 40px 20px 30px;             /* beri ruang dalam */
+  flex: 1;                     /* isi sisa ruang di bawah gambar */
+  background: #FFFFFF;         /* putih polos */
+  padding: 30px 24px 40px;
+  color: var(--text-body);
+  text-align: left;
 }
 
-/* Seluruh teks dibuat putih bersih */
+/* Kembalikan warna teks ke palet asli (hijau gelap) */
 .letter-left,
 .letter-greeting,
 .letter-body,
@@ -298,40 +303,62 @@
 .center-heart,
 .letter-sig,
 .letter-date {
-  color: #ffffff !important;          /* paksa putih */
-  text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+  color: inherit;              /* warisi dari .letter-left */
+  text-shadow: none;
 }
 
-/* Gaya font tetap elegan */
+/* Gaya spesifik per elemen */
 .letter-greeting {
+  font-family: 'Cormorant Garamond', serif;
   font-size: 15px;
+  color: var(--accent);
+  font-style: italic;
+  margin-bottom: 12px;
   font-weight: 600;
-  margin-bottom: 10px;
 }
 
 .letter-body {
+  font-family: 'Cormorant Garamond', serif;
   font-size: 16px;
-  line-height: 1.5;
-  margin-bottom: 14px;
+  line-height: 1.6;
+  color: var(--text-body);
+  margin-bottom: 18px;
+}
+
+.letter-body em {
+  font-style: italic;
+  color: var(--text-title);
+  font-weight: 600;
 }
 
 .center-heart {
   font-size: 20px;
-  margin: 10px 0 6px;
-  color: var(--highlight) !important; /* hati tetap merah muda untuk aksen */
+  color: var(--highlight) !important; /* merah muda tetap */
+  margin: 12px 0 8px;
 }
 
 .letter-sig {
+  font-family: 'Cormorant Garamond', serif;
   font-size: 28px;
+  font-style: italic;
   font-weight: 600;
+  color: var(--text-title);
   line-height: 1.1;
+  margin-bottom: 6px;
 }
 
 .letter-date {
   font-size: 11px;
   letter-spacing: 2px;
   text-transform: uppercase;
+  color: var(--text-muted);
   margin-top: 4px;
+}
+
+/* Animasi fadeUp untuk teks tetap jalan */
+.letter-left.anim-in {
+  animation: fadeUp 0.5s cubic-bezier(0.22,1,0.36,1) both;
+  animation-delay: 0.2s;
 }
 
 /* Animasi fadeUp dari .anim-in tetap jalan */
