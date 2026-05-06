@@ -3,6 +3,11 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+<!-- PENANGKAL CACHE: Memaksa browser selalu mengambil file versi terbaru -->
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Adis & Ratna — A Month in Messages</title>
@@ -417,7 +422,10 @@
 </div>
 
 <script>
-  // ── FIX CACHE BUSTING ──
+  // ── FIX CACHE BUSTING UNTUK ASSET (Gambar/Lagu) ──
+  // Perhatian: Jika Anda membuka file ini dengan cara klik 2x (URL berawalan file:///), 
+  // Cache busting tidak bisa dipakai karena akan merusak path file lokal.
+  // Anda HANYA PERLU hard refresh saat mengubah gambar/lagu jika menggunakan file://
   const isLocalFile = window.location.protocol.startsWith('file');
   const cacheBust = isLocalFile ? '' : '?v=' + Date.now();
 
