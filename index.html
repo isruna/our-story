@@ -240,109 +240,104 @@
   .q-sender-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--highlight); }
   .q-sender { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-title); font-weight: 600;}
 
-  /* SLIDE 10: LOVE LETTER (LAYOUT KIRI FOTO, KANAN TEKS) */
-  #slide-10 {
-    background: var(--bg-main);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: calc(max(24px, env(safe-area-inset-top)) + 16px) 16px 100px;
-  }
+  /* SLIDE 10: LOVE LETTER — GAMBAR BACKGROUND PENUH, TEKS DI ATAS KARTU */
+#slide-10 {
+  background: var(--bg-main);
+  position: relative;               /* penting untuk anak absolute */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(max(24px, env(safe-area-inset-top)) + 20px) 20px 100px;
+  overflow: hidden;
+}
 
-  .letter-row {
-    display: flex;
-    flex-direction: row;          /* kiri: foto, kanan: teks */
-    gap: 20px;                    /* sedikit lebih longgar */
-    width: 100%;
-    max-width: 420px;
-    height: 100%;
-  }
+/* Foto dijadikan background absolut */
+.letter-right {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
 
-  /* Bagian kiri: foto */
-  .letter-right {
-    width: 160px;                 /* diperbesar dari 120px → 160px */
-    flex-shrink: 0;
-    align-self: flex-end;         /* tetap di bawah */
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-  }
+.letter-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;                /* penuhi tanpa distorsi */
+  display: block;
 
-  .letter-photo {
-    width: 100%;
-    height: auto;
-    max-height: 420px;            /* lebih tinggi */
-    object-fit: cover;
-    border-radius: 18px;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  /* Animasi side‑impact tetap ada: slide dari kanan sekaligus fade */
+  opacity: 0;
+  transform: translateX(40px);
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.15s,
+              opacity 0.6s ease 0.15s;
+}
 
-    /* Animasi side-impact setiap kali slide 10 aktif */
-    opacity: 0;
-    transform: translateX(60px);
-    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s,
-                opacity 0.5s ease 0.2s;
-  }
+.slide#slide-10.active .letter-photo {
+  opacity: 1;
+  transform: translateX(0);
+}
 
-  .slide#slide-10.active .letter-photo {
-    opacity: 1;
-    transform: translateX(0);
-  }
+/* Kartu putih di atas gambar untuk teks */
+.letter-left {
+  position: relative;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.92);   /* hampir solid, sedikit transparan */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 24px;
+  padding: 30px 24px;
+  max-width: 340px;
+  width: 100%;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+  text-align: left;
+  /* animasi fadeup sudah ada dari .anim-in */
+}
 
-  /* Bagian kanan: teks */
-  .letter-left {
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding-right: 4px;
-  }
+/* Gaya teks di dalam kartu (sama seperti sebelumnya, sedikit disesuaikan) */
+.letter-greeting {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  color: var(--accent);
+  font-style: italic;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
 
-  .letter-greeting {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 15px;
-    color: var(--accent);
-    font-style: italic;
-    margin-bottom: 14px;
-    font-weight: 600;
-  }
+.letter-body {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text-body);
+  margin-bottom: 16px;
+}
 
-  .letter-body {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 16px;
-    line-height: 1.45;
-    color: var(--text-body);
-    margin-bottom: 18px;
-  }
+.letter-body em {
+  font-style: italic;
+  color: var(--text-title);
+  font-weight: 600;
+}
 
-  .letter-body em {
-    font-style: italic;
-    color: var(--text-title);
-    font-weight: 600;
-  }
+.center-heart {
+  font-size: 20px;
+  color: var(--highlight);
+  margin: 12px 0 8px;
+}
 
-  .center-heart {
-    font-size: 20px;
-    color: var(--highlight);
-    margin: 10px 0 6px;
-  }
+.letter-sig {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-style: italic;
+  font-weight: 600;
+  color: var(--text-title);
+  line-height: 1.1;
+}
 
-  .letter-sig {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 28px;
-    font-style: italic;
-    font-weight: 600;
-    color: var(--text-title);
-    line-height: 1.1;
-  }
-
-  .letter-date {
-    font-size: 11px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-top: 4px;
-  }
+.letter-date {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
 
   /* ANIMATION */
   .slide.active .anim-in { animation: fadeUp 0.5s cubic-bezier(0.22,1,0.36,1) both; }
