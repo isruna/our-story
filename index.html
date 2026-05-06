@@ -1,15 +1,19 @@
---- START OF FILE index.html ---
+--- START OF FILE story.html ---
 
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<!-- ANTI CACHE: Memaksa browser selalu memuat HTML terbaru -->
+<!-- SCRIPT ANTI-CACHE MUTLAK: Memaksa browser me-reload file lokal jika ada perubahan -->
+<script>
+  if (window.location.protocol === 'file:' && !window.location.search.includes('v=')) {
+    window.location.replace(window.location.href + '?v=' + new Date().getTime());
+  }
+</script>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 
 <meta charset="UTF-8">
-<!-- Konfigurasi Viewport Khusus Mobile agar mentok layar tapi tidak terpotong Notch -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Adis & Ratna — A Month in Messages</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,69 +23,56 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    /* NUANSA: MIDNIGHT TWILIGHT */
-    --cream: #f8fafc;        
-    --warm-white: #ffffff;   
-    --deep: #080a10;         
-    --mid: #1e1b4b;          
-    --accent: #c4b5fd;       
-    --accent-glow: #a78bfa;  
-    --rose: #f472b6;         
-    --blue: #7dd3fc;         
-    --gold: #fde047;         
+    /* NUANSA FRESH: MATCHA MORNING & PEACH */
+    --bg-main: #F4F7F6;      /* Krim putih terang kehijauan */
+    --bg-card: #FFFFFF;      /* Putih bersih untuk kotak */
+    --text-title: #1E3325;   /* Hijau gelap (menggantikan putih) */
+    --text-body: #3C5444;    /* Hijau daun redup */
+    --text-muted: #799482;   /* Hijau abu-abu (untuk deskripsi) */
+    --accent: #7FA189;       /* Hijau Matcha */
+    --accent-soft: #D3E0D7;  /* Hijau Matcha sangat pudar */
+    --highlight: #F09E8C;    /* Soft Coral / Peach */
+    --sun: #E8C374;          /* Soft Gold */
   }
 
-  /* ─── FONDASI (MOBILE PRIORITY) ────────────────── */
   html, body {
-    width: 100%; height: 100%;
-    overflow: hidden;
-    background: #000; 
+    width: 100%; height: 100%; overflow: hidden;
+    background: #E8ECEA; /* Warna latar belakang luar */
     font-family: 'DM Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
   }
 
-  #app {
-    position: fixed; inset: 0;
-    display: flex; align-items: center; justify-content: center;
-  }
+  /* ─── CONTAINER 9:16 MOBILE PRIORITY ────────────── */
+  #app { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; }
 
   .story-viewport {
     position: relative;
-    /* Lebar penuh di HP, dibatasi maksimal 430px (ukuran iPhone Pro Max) di Desktop */
     width: 100%; 
-    height: 100dvh; /* Menggunakan dvh agar pas dengan layar HP termasuk address bar */
+    height: 100dvh; 
     max-width: 430px; 
     overflow: hidden;
-    background: var(--deep);
-    touch-action: none; /* Mencegah pull-to-refresh saat swipe */
+    background: var(--bg-main);
+    touch-action: none; 
   }
 
-  /* Efek gelap di atas agar Bar Progress & Panah selalu terbaca */
+  /* Gradasi atas agar bar tetap terlihat jelas */
   .story-viewport::before {
     content: ''; position: absolute; top: 0; left: 0; right: 0; height: 130px;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent);
+    background: linear-gradient(to bottom, rgba(0,0,0,0.4), transparent);
     z-index: 90; pointer-events: none;
   }
 
   @media (min-width: 480px) {
-    .story-viewport { 
-      height: min(100vh, 932px); /* Tampilan di PC/Tablet dibuat proporsional vertikal */
-      border-radius: 20px; 
-      box-shadow: 0 0 80px rgba(0,0,0,0.8); 
-    }
+    .story-viewport { height: min(100vh, 932px); border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); }
   }
 
   /* ─── PROGRESS BAR (DIJAMIN TIDAK TERPOTONG) ───── */
   .progress-bar {
-    position: absolute; 
-    /* Menggunakan fungsi max untuk mencari aman antara jarak biasa vs area kamera/notch HP */
-    top: max(12px, env(safe-area-inset-top)); 
-    left: 8px; right: 8px; z-index: 100;
+    position: absolute; top: max(12px, env(safe-area-inset-top)); left: 8px; right: 8px; z-index: 100;
     display: flex; gap: 4px;
   }
   .progress-seg {
-    flex: 1; height: 2px; 
-    background: rgba(255,255,255,0.3); border-radius: 2px; overflow: hidden;
+    flex: 1; height: 2px; background: rgba(255,255,255,0.4); border-radius: 2px; overflow: hidden;
   }
   .progress-fill { height: 100%; background: #fff; border-radius: 2px; transform-origin: left; transform: scaleX(0); }
   .progress-seg.done .progress-fill { transform: scaleX(1); }
@@ -95,7 +86,7 @@
 
   .next-arrow-hint {
     position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
-    color: rgba(255,255,255,0.55); font-size: 36px; font-weight: 300;
+    color: rgba(30,51,37,0.3); font-size: 36px; font-weight: 300;
     z-index: 90; pointer-events: none; animation: pulseRight 1.5s ease-in-out infinite;
   }
   @keyframes pulseRight {
@@ -108,113 +99,109 @@
   .slide.active { opacity: 1; pointer-events: all; }
   .slide-inner {
     position: absolute; inset: 0; 
-    /* Padding atas yang aman dari Notch Kamera */
     padding: calc(max(20px, env(safe-area-inset-top)) + 40px) 24px 30px;
     display: flex; flex-direction: column; overflow: hidden;
   }
 
   /* ─── TYPOGRAPHY GLOBALS ─────────────────────────── */
-  .slide-label { font-size: 10.5px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; font-weight: 400; }
-  .slide-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(34px, 10vw, 48px); font-weight: 300; font-style: italic; color: var(--warm-white); line-height: 1.1; margin-bottom: 24px; }
+  .slide-label { font-size: 10.5px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; font-weight: 600; }
+  .slide-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(34px, 10vw, 48px); font-weight: 600; font-style: italic; color: var(--text-title); line-height: 1.1; margin-bottom: 24px; }
 
   /* ─── SLIDE 0 — COVER ────────────────────────────── */
-  #slide-0 { background: var(--deep); display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 60px; }
-  .cover-photo { position: absolute; inset: 0; filter: brightness(0.65) saturate(0.85); }
-  .cover-photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(8,10,16,1) 0%, rgba(8,10,16,0.3) 50%, transparent 100%); }
-  .cover-content { position: relative; z-index: 2; text-align: center; color: var(--cream); padding: 0 20px; }
-  .cover-eyebrow { font-size: 10px; letter-spacing: 3.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; opacity: 0.9; }
-  .cover-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(54px, 15vw, 76px); font-weight: 300; line-height: 1; font-style: italic; color: var(--warm-white); text-shadow: 0 2px 20px rgba(0,0,0,0.8); margin-bottom: 8px; }
-  .cover-and { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 300; color: var(--accent); margin: 6px 0; }
-  .cover-sub { font-size: 12px; color: rgba(248,250,252,0.6); letter-spacing: 1.5px; margin-top: 24px; font-weight: 300; }
-  .cover-date-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(196,181,253,0.15); border: 1px solid rgba(196,181,253,0.3); border-radius: 100px; padding: 6px 16px; margin-top: 20px; color: var(--accent); font-size: 11px; letter-spacing: 1px; }
-  .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--accent); }
+  #slide-0 { background: var(--bg-main); display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 60px; }
+  .cover-photo { position: absolute; inset: 0; filter: brightness(0.9) saturate(0.85); }
+  .cover-photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, var(--bg-main) 0%, rgba(244,247,246,0.7) 40%, transparent 100%); }
+  .cover-content { position: relative; z-index: 2; text-align: center; color: var(--text-body); padding: 0 20px; }
+  .cover-eyebrow { font-size: 10px; letter-spacing: 3.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; font-weight: 600; }
+  .cover-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(54px, 15vw, 76px); font-weight: 600; line-height: 1; font-style: italic; color: var(--text-title); margin-bottom: 8px; }
+  .cover-and { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 400; color: var(--highlight); margin: 6px 0; }
+  .cover-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; margin-top: 24px; font-weight: 400; }
+  .cover-date-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--accent-soft); border: 1px solid var(--accent); border-radius: 100px; padding: 6px 16px; margin-top: 20px; color: var(--text-title); font-size: 11px; letter-spacing: 1px; font-weight: 600; }
+  .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--text-title); }
 
   /* ─── SLIDE 1: THE ARC ───────────────────────────── */
-  #slide-1 { background: linear-gradient(160deg, #0b0f19 0%, #171b30 40%, #27224f 100%); }
+  #slide-1 { background: var(--bg-main); }
   .arc-body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-  .arc-phase { display: flex; gap: 14px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid rgba(196,181,253,0.12); position: relative; }
+  .arc-phase { display: flex; gap: 14px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--accent-soft); position: relative; }
   .arc-phase:last-child { border-bottom: none; }
   .phase-dot-col { display: flex; flex-direction: column; align-items: center; padding-top: 4px; }
-  .phase-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-  .phase-line { width: 1px; flex: 1; min-height: 24px; background: linear-gradient(to bottom, rgba(196,181,253,0.4), transparent); margin-top: 4px; }
+  .phase-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+  .phase-line { width: 1px; flex: 1; min-height: 24px; background: linear-gradient(to bottom, var(--accent), transparent); margin-top: 4px; }
   .arc-phase:last-child .phase-line { display: none; }
-  .phase-date { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
-  .phase-name { font-family: 'Cormorant Garamond', serif; font-size: 20px; color: var(--cream); margin-bottom: 4px; font-style: italic; line-height: 1.1; }
-  .phase-desc { font-size: 12px; color: rgba(248,250,252,0.6); line-height: 1.5; font-weight: 300; }
+  .phase-date { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; font-weight: 600; }
+  .phase-name { font-family: 'Cormorant Garamond', serif; font-size: 20px; color: var(--text-title); margin-bottom: 4px; font-style: italic; line-height: 1.1; font-weight: 600; }
+  .phase-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; font-weight: 400; }
 
   /* ─── SLIDE 2: PHOTOS ────────────────────────────── */
-  #slide-2 { background: #05060A; }
-  .photo-grid-bg { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr 1fr; gap: 2px; }
-  .photo-cell { overflow: hidden; background: #0b0f19; }
-  .photo-cell img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.5) saturate(0.8) hue-rotate(5deg); }
-  .photo-grid-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(5,6,10,0.3) 0%, rgba(5,6,10,0.5) 40%, rgba(5,6,10,0.95) 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 40px 24px 60px; }
-  .moments-title { font-family: 'Cormorant Garamond', serif; font-size: 46px; font-weight: 300; font-style: italic; color: var(--warm-white); line-height: 1; margin-bottom: 12px; }
-  .moments-sub { font-size: 12px; color: rgba(248,250,252,0.6); font-weight: 300; line-height: 1.5; }
+  #slide-2 { background: var(--bg-main); }
+  .photo-grid-bg { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr 1fr; gap: 4px; padding: 4px; }
+  .photo-cell { overflow: hidden; background: var(--accent-soft); border-radius: 8px; }
+  .photo-cell img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.85); }
+  .photo-grid-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(244,247,246,0.1) 0%, rgba(244,247,246,0.8) 50%, var(--bg-main) 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 40px 24px 60px; }
+  .moments-title { font-family: 'Cormorant Garamond', serif; font-size: 46px; font-weight: 600; font-style: italic; color: var(--text-title); line-height: 1; margin-bottom: 12px; }
+  .moments-sub { font-size: 12px; color: var(--text-muted); font-weight: 400; line-height: 1.5; }
 
   /* ─── SLIDE 3: EMOJIS ────────────────────────────── */
-  #slide-3 { background: linear-gradient(135deg, #0a0c14 0%, #16132b 60%, #2b1b40 100%); }
+  #slide-3 { background: var(--bg-main); }
   .emoji-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 10px; }
-  .emoji-card { background: rgba(196,181,253,0.05); border: 1px solid rgba(196,181,253,0.15); border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 6px; position: relative; overflow: hidden; }
-  .emoji-card::before { content: ''; position: absolute; top: -20px; right: -20px; width: 80px; height: 80px; border-radius: 50%; background: radial-gradient(circle, rgba(196,181,253,0.08), transparent); }
+  .emoji-card { background: var(--bg-card); border: 1px solid var(--accent-soft); box-shadow: 0 4px 12px rgba(0,0,0,0.03); border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 6px; position: relative; overflow: hidden; }
   .emoji-big { font-size: 32px; line-height: 1; }
-  .emoji-count { font-size: 20px; font-weight: 300; color: var(--accent); letter-spacing: -1px; }
-  .emoji-label { font-size: 11px; color: rgba(248,250,252,0.55); font-weight: 300; line-height: 1.35; }
+  .emoji-count { font-size: 20px; font-weight: 600; color: var(--accent); letter-spacing: -1px; }
+  .emoji-label { font-size: 11px; color: var(--text-muted); font-weight: 400; line-height: 1.35; }
 
   /* ─── SLIDE 4: NUMBERS ───────────────────────────── */
-  #slide-4 { background: #080a10; overflow: hidden; }
-  #slide-4::before { content: ''; position: absolute; top: -100px; left: -100px; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, rgba(196,181,253,0.08), transparent 70%); pointer-events: none; }
+  #slide-4 { background: var(--bg-main); overflow: hidden; }
   .numbers-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
-  .num-card { background: rgba(196,181,253,0.04); border: 1px solid rgba(196,181,253,0.12); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; justify-content: center; }
+  .num-card { background: var(--bg-card); border: 1px solid var(--accent-soft); box-shadow: 0 4px 12px rgba(0,0,0,0.03); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; justify-content: center; }
   .num-card.wide { grid-column: 1 / -1; }
-  .num-big { font-family: 'Cormorant Garamond', serif; font-size: 40px; font-weight: 300; color: var(--warm-white); line-height: 1; letter-spacing: -1px; margin-bottom: 4px; }
-  .num-unit { font-size: 12px; color: var(--accent); font-weight: 300; }
-  .num-desc { font-size: 11px; color: rgba(248,250,252,0.45); font-weight: 300; line-height: 1.4; margin-top: 6px; }
+  .num-big { font-family: 'Cormorant Garamond', serif; font-size: 40px; font-weight: 600; color: var(--text-title); line-height: 1; letter-spacing: -1px; margin-bottom: 4px; }
+  .num-unit { font-size: 12px; color: var(--highlight); font-weight: 600; }
+  .num-desc { font-size: 11px; color: var(--text-muted); font-weight: 400; line-height: 1.4; margin-top: 6px; }
   .mini-chart { display: flex; gap: 3px; align-items: flex-end; height: 40px; width: 100%; margin-top: 10px; }
-  .mini-bar { flex: 1; border-radius: 2px 2px 0 0; background: linear-gradient(to top, var(--blue), var(--accent-glow)); opacity: 0.8; transform-origin: bottom; transform: scaleY(0); animation: barUp 1s ease both; }
+  .mini-bar { flex: 1; border-radius: 2px 2px 0 0; background: linear-gradient(to top, var(--accent), var(--highlight)); opacity: 0.9; transform-origin: bottom; transform: scaleY(0); animation: barUp 1s ease both; }
   @keyframes barUp { to { transform: scaleY(1); } }
 
   /* ─── SLIDE 5: PATTERNS ──────────────────────────── */
-  #slide-5 { background: linear-gradient(145deg, #0b0d14 0%, #161826 100%); }
+  #slide-5 { background: var(--bg-main); }
   .pattern-list { display: flex; flex-direction: column; gap: 12px; flex: 1; justify-content: center; }
-  .pattern-item { display: flex; gap: 12px; align-items: flex-start; padding: 14px; border-radius: 14px; background: rgba(196,181,253,0.04); border: 1px solid rgba(196,181,253,0.1); }
-  .pattern-icon { width: 36px; height: 36px; border-radius: 10px; background: rgba(196,181,253,0.12); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
-  .pattern-name { font-size: 14px; color: var(--cream); font-weight: 400; margin-bottom: 4px; }
-  .pattern-desc { font-size: 12px; color: rgba(248,250,252,0.5); font-weight: 300; line-height: 1.45; }
+  .pattern-item { display: flex; gap: 12px; align-items: flex-start; padding: 14px; border-radius: 14px; background: var(--bg-card); border: 1px solid var(--accent-soft); box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+  .pattern-icon { width: 36px; height: 36px; border-radius: 10px; background: var(--accent-soft); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .pattern-name { font-size: 14px; color: var(--text-title); font-weight: 600; margin-bottom: 4px; }
+  .pattern-desc { font-size: 12px; color: var(--text-muted); font-weight: 400; line-height: 1.45; }
 
   /* ─── SLIDE 6: PHRASES ───────────────────────────── */
-  #slide-6 { background: #06070a; }
-  .phrase-bg-art { position: absolute; inset: 0; background: radial-gradient(ellipse at 20% 80%, rgba(244,114,182,0.06), transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(196,181,253,0.06), transparent 50%); }
+  #slide-6 { background: var(--bg-main); }
+  .phrase-bg-art { position: absolute; inset: 0; background: radial-gradient(ellipse at 20% 80%, rgba(240,158,140,0.1), transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(127,161,137,0.1), transparent 50%); }
   .phrase-list { display: flex; flex-direction: column; gap: 14px; flex: 1; justify-content: center; z-index: 2; position: relative;}
-  .phrase-chip { display: inline-flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 100px; padding: 10px 16px; font-size: 12px; color: var(--cream); }
-  .phrase-chip .pill-count { background: rgba(196,181,253,0.15); color: var(--accent-glow); border-radius: 100px; padding: 2px 8px; font-size: 10px; }
-  .phrase-meaning { font-size: 11px; color: rgba(248,250,252,0.45); font-weight: 300; padding-left: 16px; margin-top: 4px; font-style: italic; }
+  .phrase-chip { display: inline-flex; align-items: center; gap: 10px; background: var(--bg-card); border: 1px solid var(--accent-soft); border-radius: 100px; padding: 10px 16px; font-size: 12px; color: var(--text-title); box-shadow: 0 4px 12px rgba(0,0,0,0.02); font-weight: 600;}
+  .phrase-chip .pill-count { background: var(--accent-soft); color: var(--text-title); border-radius: 100px; padding: 2px 8px; font-size: 10px; }
+  .phrase-meaning { font-size: 11px; color: var(--text-muted); font-weight: 400; padding-left: 16px; margin-top: 4px; font-style: italic; }
   .phrase-row { display: flex; flex-direction: column; align-items: flex-start; }
 
   /* ─── SLIDE 7: QUOTES ────────────────────────────── */
-  #slide-7 { background: #050608; }
+  #slide-7 { background: var(--bg-main); }
   .quote-slide-inner { position: absolute; inset: 0; padding: calc(max(20px, env(safe-area-inset-top)) + 40px) 0 40px; display: flex; flex-direction: column; }
   .quote-slide-header { padding: 0 24px; margin-bottom: 16px; }
   .quotes-container { flex: 1; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
-  .quote-card { padding: 16px 24px; position: relative; border-bottom: 1px solid rgba(196,181,253,0.08); }
+  .quote-card { padding: 16px 24px; position: relative; border-bottom: 1px solid var(--accent-soft); }
   .quote-card:last-child { border-bottom: none; }
-  .q-mark { font-family: 'Cormorant Garamond', serif; font-size: 46px; line-height: 0.6; color: var(--accent); opacity: 0.2; font-style: italic; position: absolute; top: 12px; left: 16px; }
-  .q-text { font-family: 'Cormorant Garamond', serif; font-size: 16px; line-height: 1.4; color: var(--warm-white); font-style: italic; padding-left: 14px; font-weight: 300; }
-  .q-translation { font-size: 11px; color: rgba(248,250,252,0.38); font-weight: 300; padding-left: 14px; margin-top: 6px; line-height: 1.4; font-style: italic; }
+  .q-mark { font-family: 'Cormorant Garamond', serif; font-size: 46px; line-height: 0.6; color: var(--accent); opacity: 0.3; font-style: italic; position: absolute; top: 12px; left: 16px; }
+  .q-text { font-family: 'Cormorant Garamond', serif; font-size: 16px; line-height: 1.4; color: var(--text-title); font-style: italic; padding-left: 14px; font-weight: 600; }
+  .q-translation { font-size: 11px; color: var(--text-muted); font-weight: 400; padding-left: 14px; margin-top: 6px; line-height: 1.4; font-style: italic; }
   .q-meta { display: flex; align-items: center; gap: 6px; padding-left: 14px; margin-top: 10px; }
-  .q-sender-dot { width: 5px; height: 5px; border-radius: 50%; }
-  .q-sender { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; }
+  .q-sender-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--highlight); }
+  .q-sender { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-title); font-weight: 600;}
 
   /* ─── SLIDE 8: LOVE LETTER ───────────────────────── */
-  #slide-8 { background: #040507; }
-  #slide-8::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 80%, rgba(244,114,182,0.08), transparent 60%), radial-gradient(ellipse at 50% 10%, rgba(196,181,253,0.05), transparent 50%); }
+  #slide-8 { background: var(--bg-main); }
   .letter-inner { position: absolute; inset: 0; padding: calc(max(20px, env(safe-area-inset-top)) + 40px) 24px 60px; display: flex; flex-direction: column; justify-content: center; }
-  .letter-greeting { font-family: 'Cormorant Garamond', serif; font-size: 15px; color: var(--accent); font-style: italic; margin-bottom: 16px; }
-  .letter-body { font-family: 'Cormorant Garamond', serif; font-size: 18px; line-height: 1.6; color: var(--cream); font-weight: 300; margin-bottom: 30px; position: relative; z-index: 2;}
-  .letter-body em { font-style: italic; color: var(--warm-white); }
-  .letter-sig { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-style: italic; font-weight: 300; color: var(--warm-white); line-height: 1.1; margin-bottom: 6px; }
-  .letter-date { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: rgba(196,181,253,0.6); }
-  .letter-photo { position: absolute; bottom: 0; right: 0; width: 220px; height: 280px; object-fit: cover; filter: brightness(0.3) saturate(0.6) hue-rotate(5deg); mask-image: linear-gradient(to top-left, rgba(0,0,0,0.9) 30%, transparent 100%); -webkit-mask-image: linear-gradient(to top-left, rgba(0,0,0,0.9) 30%, transparent 100%); }
-  .center-heart { text-align: left; color: var(--rose); font-size: 18px; margin: 20px 0; }
+  .letter-greeting { font-family: 'Cormorant Garamond', serif; font-size: 15px; color: var(--accent); font-style: italic; margin-bottom: 16px; font-weight: 600; }
+  .letter-body { font-family: 'Cormorant Garamond', serif; font-size: 18px; line-height: 1.6; color: var(--text-body); font-weight: 400; margin-bottom: 30px; position: relative; z-index: 2;}
+  .letter-body em { font-style: italic; color: var(--text-title); font-weight: 600; }
+  .letter-sig { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-style: italic; font-weight: 600; color: var(--text-title); line-height: 1.1; margin-bottom: 6px; }
+  .letter-date { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); }
+  .letter-photo { position: absolute; bottom: 0; right: 0; width: 220px; height: 280px; object-fit: cover; filter: brightness(0.9); mask-image: linear-gradient(to top-left, rgba(0,0,0,0.6) 30%, transparent 100%); -webkit-mask-image: linear-gradient(to top-left, rgba(0,0,0,0.6) 30%, transparent 100%); }
+  .center-heart { text-align: left; color: var(--highlight); font-size: 18px; margin: 20px 0; }
 
   /* ─── ANIMATION IN ───────────────────────────────── */
   .slide.active .anim-in { animation: fadeUp 0.5s cubic-bezier(0.22,1,0.36,1) both; }
@@ -229,16 +216,16 @@
     position: absolute; bottom: max(24px, env(safe-area-inset-bottom)); 
     left: 50%; transform: translateX(-50%);
     z-index: 200; display: flex; align-items: center; gap: 8px;
-    background: rgba(10,12,24,0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(196,181,253,0.2); border-radius: 100px;
-    padding: 6px 14px 6px 8px; white-space: nowrap;
+    background: rgba(255,255,255,0.9); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--accent-soft); border-radius: 100px;
+    padding: 6px 14px 6px 8px; white-space: nowrap; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
   }
   .music-btn {
-    width: 28px; height: 28px; border-radius: 50%; background: rgba(196,181,253,0.15);
-    color: var(--accent); font-size: 11px; display: flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px; border-radius: 50%; background: var(--accent-soft);
+    color: var(--text-title); font-size: 11px; display: flex; align-items: center; justify-content: center;
   }
   .music-info { display: flex; flex-direction: column; gap: 2px; }
-  .music-title { font-size: 10px; color: var(--cream); letter-spacing: 0.3px; }
+  .music-title { font-size: 10px; color: var(--text-title); letter-spacing: 0.3px; font-weight: 600;}
   .music-bars { display: flex; align-items: flex-end; gap: 2px; height: 12px; }
   .music-bar { width: 2px; background: var(--accent); border-radius: 1px; opacity: 0.8; }
   .music-bar:nth-child(1) { height: 12px; animation: bar1 0.8s ease-in-out infinite alternate; }
@@ -249,7 +236,7 @@
   @keyframes bar2 { from { height: 8px; } to { height: 3px; } }
   @keyframes bar3 { from { height: 2px; } to { height: 10px; } }
 
-  .photo-placeholder { width: 100%; height: 100%; background: linear-gradient(135deg, #171b30 0%, #27224f 100%); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px; }
+  .photo-placeholder { width: 100%; height: 100%; background: var(--accent-soft); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px; }
   .photo-placeholder span { font-size: 24px; opacity: 0.3; }
 </style>
 </head>
@@ -281,10 +268,10 @@
         <div class="slide-title anim-in">Busur<br>Cerita Kita</div>
         <div class="arc-body anim-in">
           <div class="arc-phase"><div class="phase-dot-col"><div class="phase-dot" style="background:var(--accent)"></div><div class="phase-line"></div></div><div class="phase-text"><div class="phase-date">5 Apr</div><div class="phase-name">Hallo Kaa</div><div class="phase-desc">Dimulai dari pertanyaan Pitagoras. Siapa yang menyangka "hallo kaa" akan jadi awal segalanya?</div></div></div>
-          <div class="arc-phase"><div class="phase-dot-col"><div class="phase-dot" style="background:var(--blue)"></div><div class="phase-line"></div></div><div class="phase-text"><div class="phase-date">7 Apr</div><div class="phase-name">Ulang Tahunmu</div><div class="phase-desc">Adis ingat hari spesialmu. Dari sana, obrolan malam mulai semakin panjang.</div></div></div>
-          <div class="arc-phase"><div class="phase-dot-col"><div class="phase-dot" style="background:var(--rose)"></div><div class="phase-line"></div></div><div class="phase-text"><div class="phase-date">12 Apr</div><div class="phase-name">Pertemuan Pertama</div><div class="phase-desc">Tajur. Kompak berpakaian sama. Adis nyasar pulangnya — tapi hatinya menemukan arah.</div></div></div>
-          <div class="arc-phase"><div class="phase-dot-col"><div class="phase-dot" style="background:var(--accent-glow)"></div><div class="phase-line"></div></div><div class="phase-text"><div class="phase-date">13 Apr, 02:00</div><div class="phase-name">Real Questions</div><div class="phase-desc">"After met, ekspektasi kamu ke aku apa?" — kejujuran mengalahkan rasa takut.</div></div></div>
-          <div class="arc-phase"><div class="phase-dot-col"><div class="phase-dot" style="background:var(--gold)"></div></div><div class="phase-text"><div class="phase-date">Mei</div><div class="phase-name">Sayangku</div><div class="phase-desc">"Pagi my love 💕" — cinta tak perlu lagi malu-malu.</div></div></div>
+          <div class="arc-phase"><div class="phase-dot-col"><div class="phase-dot" style="background:var(--highlight)"></div><div class="phase-line"></div></div><div class="phase-text"><div class="phase-date">7 Apr</div><div class="phase-name">Ulang Tahunmu</div><div class="phase-desc">Adis ingat hari spesialmu. Dari sana, obrolan malam mulai semakin panjang.</div></div></div>
+          <div class="arc-phase"><div class="phase-dot-col"><div class="phase-dot" style="background:var(--text-title)"></div><div class="phase-line"></div></div><div class="phase-text"><div class="phase-date">12 Apr</div><div class="phase-name">Pertemuan Pertama</div><div class="phase-desc">Tajur. Kompak berpakaian sama. Adis nyasar pulangnya — tapi hatinya menemukan arah.</div></div></div>
+          <div class="arc-phase"><div class="phase-dot-col"><div class="phase-dot" style="background:var(--sun)"></div><div class="phase-line"></div></div><div class="phase-text"><div class="phase-date">13 Apr, 02:00</div><div class="phase-name">Real Questions</div><div class="phase-desc">"After met, ekspektasi kamu ke aku apa?" — kejujuran mengalahkan rasa takut.</div></div></div>
+          <div class="arc-phase"><div class="phase-dot-col"><div class="phase-dot" style="background:var(--accent)"></div></div><div class="phase-text"><div class="phase-date">Mei</div><div class="phase-name">Sayangku</div><div class="phase-desc">"Pagi my love 💕" — cinta tak perlu lagi malu-malu.</div></div></div>
         </div>
       </div>
     </div>
@@ -332,12 +319,12 @@
           <div class="num-card"><div class="num-big">423</div><div class="num-unit">pesan</div><div class="num-desc">Hari paling cerewet — 15 April</div></div>
           <div class="num-card"><div class="num-big">47</div><div class="num-unit">"makasih"</div><div class="num-desc">Syukur tak pernah perlu alasan</div></div>
           <div class="num-card wide">
-            <div class="num-unit" style="margin-bottom:4px;">Waktu favorit — pagi dan malam</div>
+            <div class="num-unit" style="margin-bottom:4px; color:var(--text-title);">Waktu favorit — pagi dan malam</div>
             <div class="mini-chart" id="hourChart"></div>
             <div style="display:flex;justify-content:space-between;margin-top:4px;">
-              <span style="font-size:10px;color:rgba(248,250,252,0.3);">05.00</span>
-              <span style="font-size:10px;color:rgba(248,250,252,0.3);">12.00</span>
-              <span style="font-size:10px;color:rgba(248,250,252,0.3);">20.00</span>
+              <span style="font-size:10px;color:var(--text-muted);">05.00</span>
+              <span style="font-size:10px;color:var(--text-muted);">12.00</span>
+              <span style="font-size:10px;color:var(--text-muted);">20.00</span>
             </div>
           </div>
         </div>
@@ -382,10 +369,10 @@
           <div class="slide-title anim-in">Kata-kata<br>yang Tersisa</div>
         </div>
         <div class="quotes-container anim-in">
-          <div class="quote-card"><div class="q-mark">"</div><div class="q-text">aku bisa ketemu kamu aja seneng bgttt</div><div class="q-translation">just being able to meet you makes me happy.</div><div class="q-meta"><div class="q-sender-dot" style="background:var(--blue)"></div><div class="q-sender" style="color:var(--blue)">adis</div></div></div>
-          <div class="quote-card"><div class="q-mark">"</div><div class="q-text">real question nya, after met ekspektasi kamu ke aku apa gituu</div><div class="q-translation">what do you expect from this?</div><div class="q-meta"><div class="q-sender-dot" style="background:var(--blue)"></div><div class="q-sender" style="color:var(--blue)">adis</div></div></div>
-          <div class="quote-card"><div class="q-mark">"</div><div class="q-text">Semoga dilancarkan, dimudahkan, ga ada yg bikin pusing 💞</div><div class="q-translation">a morning prayer for the person you love.</div><div class="q-meta"><div class="q-sender-dot" style="background:var(--rose)"></div><div class="q-sender" style="color:var(--rose)">ratna</div></div></div>
-          <div class="quote-card"><div class="q-mark">"</div><div class="q-text">Bye bye dulu sayangkuu</div><div class="q-translation">the softest word, changed everything.</div><div class="q-meta"><div class="q-sender-dot" style="background:var(--rose)"></div><div class="q-sender" style="color:var(--rose)">ratna</div></div></div>
+          <div class="quote-card"><div class="q-mark">"</div><div class="q-text">aku bisa ketemu kamu aja seneng bgttt</div><div class="q-translation">just being able to meet you makes me happy.</div><div class="q-meta"><div class="q-sender-dot"></div><div class="q-sender">adis</div></div></div>
+          <div class="quote-card"><div class="q-mark">"</div><div class="q-text">real question nya, after met ekspektasi kamu ke aku apa gituu</div><div class="q-translation">what do you expect from this?</div><div class="q-meta"><div class="q-sender-dot"></div><div class="q-sender">adis</div></div></div>
+          <div class="quote-card"><div class="q-mark">"</div><div class="q-text">Semoga dilancarkan, dimudahkan, ga ada yg bikin pusing 💞</div><div class="q-translation">a morning prayer for the person you love.</div><div class="q-meta"><div class="q-sender-dot" style="background:var(--highlight)"></div><div class="q-sender" style="color:var(--highlight)">ratna</div></div></div>
+          <div class="quote-card"><div class="q-mark">"</div><div class="q-text">Bye bye dulu sayangkuu</div><div class="q-translation">the softest word, changed everything.</div><div class="q-meta"><div class="q-sender-dot" style="background:var(--highlight)"></div><div class="q-sender" style="color:var(--highlight)">ratna</div></div></div>
         </div>
       </div>
     </div>
@@ -423,9 +410,7 @@
 </div>
 
 <script>
-  // ── FIX CACHE BUSTING SUPER KUAT (Memaksa Versi Baru Terus) ──
-  // Parameter ?v=[waktu_saat_ini] membuat browser SELALU mendownload gambar/lagu terbaru 
-  // karena menganggapnya URL yang berbeda.
+  // Script ini memastikan gambar dan lagu mengambil versi ter-update!
   const VERSION_STAMP = new Date().getTime(); 
   
   document.querySelectorAll('[data-asset]').forEach(el => {
