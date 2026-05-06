@@ -335,55 +335,76 @@
   z-index: 3;
 }
 
-/* ── SLIDE 10: LOVE LETTER – blok tanda tangan ─ */
-#slide-10 .letter-inner {
-  padding-bottom: 120px;           /* beri ruang lebih agar tidak menumpuk foto */
+/* ── SLIDE 10: LAYOUT PAS, TEKS KANAN, FOTO KIRI ── */
+#slide-10 {
+  background: var(--bg-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(max(24px, env(safe-area-inset-top)) + 16px) 16px 100px;
 }
 
-#slide-10 .letter-photo {
-  z-index: 1;                       /* jangan negatif */
-  bottom: 20px;                     /* sedikit naik dari bawah */
-  right: 0;
-  width: 210px;
-  height: 270px;
-  opacity: 0.35;                    /* transparan agar teks tetap terbaca */
-}
-#slide-10 .center-heart {
-  margin: 24px 0 12px;
-  font-size: 22px;
-  color: var(--highlight);
-  background: rgba(244,247,246,0.8); /* background samar supaya teks terbaca */
-  display: inline-block;
-  padding: 6px 20px;
-  border-radius: 12px;
+.letter-row {
+  display: flex;
+  flex-direction: row;
+  gap: 18px;
+  width: 100%;
+  max-width: 400px;
+  height: 100%;
 }
 
-#slide-10 .letter-sig {
-  margin-bottom: 8px;
-  background: rgba(244,247,246,0.8);
-  display: inline-block;
-  padding: 0 16px;
-  border-radius: 10px;
-  color: var(--text-title);
+/* Bagian kiri – foto */
+.letter-right {
+  width: 120px;              /* sedikit lebih kecil */
+  flex-shrink: 0;
+  align-self: flex-end;      /* tetap di bawah */
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
 }
 
-#slide-10 .letter-date {
-  color: var(--text-title);         /* lebih gelap daripada muted */
-  opacity: 0.7;
-  background: rgba(244,247,246,0.8);
-  display: inline-block;
-  padding: 2px 14px;
-  border-radius: 8px;
+.letter-photo {
+  width: 100%;
+  height: auto;
+  max-height: 320px;         /* batas tinggi agar tidak berlebihan */
+  object-fit: cover;
+  border-radius: 18px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
 }
-  #slide-0 .cover-title {
-  text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+
+/* Bagian kanan – teks */
+.letter-left {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-right: 4px;
 }
-#slide-0 .cover-title,
-#slide-0 .cover-eyebrow,
-#slide-0 .cover-sub,
-#slide-0 .cover-date-badge {
-  position: relative;
-  z-index: 4;
+
+/* Ukuran teks disesuaikan agar tidak penuh */
+.letter-greeting {
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.letter-body {
+  font-size: 15px;          /* sedikit turun */
+  line-height: 1.45;
+  margin-bottom: 16px;
+}
+
+.center-heart {
+  font-size: 18px;
+  margin: 8px 0 6px;
+}
+
+.letter-sig {
+  font-size: 26px;
+}
+
+.letter-date {
+  font-size: 10px;
 }
 
   /* Label slide di slide foto (2,3,4) – lebih kontras di atas gambar */
@@ -404,6 +425,18 @@
   font-weight: 700;
   box-shadow: 0 2px 8px rgba(0,0,0,0.04);
   margin-bottom: 12px;
+}
+  /* Foto di slide terakhir akan meluncur dari kanan saat slide aktif */
+.slide#slide-10 .letter-photo {
+  opacity: 0;
+  transform: translateX(60px);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s,
+              opacity 0.5s ease 0.2s;
+}
+
+.slide#slide-10.active .letter-photo {
+  opacity: 1;
+  transform: translateX(0);
 }
 </style>
 </head>
