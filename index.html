@@ -239,14 +239,15 @@
   @keyframes bar3 { from { height: 2px; } to { height: 10px; } }
   /* ── SLIDE 0: COVER – perkuat kontras teks ───── */
 #slide-0 .cover-content {
-  background: rgba(255, 255, 255, 0.85); /* layer putih semi‑transparan */
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-radius: 24px;
-  padding: 30px 24px;
-  margin: 0 20px 60px;             /* naikkan dari bawah */
-  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-  padding-bottom: 30px;
+  background: rgba(255, 255, 255, 0.92);   /* hampir solid, tetap sedikit transparan */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 28px;
+  padding: 36px 28px;
+  margin: 0 24px 80px;                     /* turunkan agar tidak menempel bawah */
+  box-shadow: 0 12px 32px rgba(0,0,0,0.06);
+  position: relative;
+  z-index: 3;
 }
 
 /* ── SLIDE 10: LOVE LETTER – blok tanda tangan ─ */
@@ -291,6 +292,13 @@
 }
   #slide-0 .cover-title {
   text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+#slide-0 .cover-title,
+#slide-0 .cover-eyebrow,
+#slide-0 .cover-sub,
+#slide-0 .cover-date-badge {
+  position: relative;
+  z-index: 4;
 }
 </style>
 </head>
