@@ -391,14 +391,15 @@
 .photo-slide .slide-label {
   display: inline-flex;
   align-items: center;
-  background: var(--bg-card);                    /* putih */
-  border: 1px solid var(--accent-soft);          /* garis hijau lembut */
+  align-self: flex-start;                    /* 🆕 mencegah peregangan */
+  background: var(--bg-card);                /* putih */
+  border: 1px solid var(--accent-soft);
   border-radius: 100px;
   padding: 6px 14px;
   font-size: 10.5px;
   letter-spacing: 3px;
   text-transform: uppercase;
-  color: var(--accent);                          /* hijau segar #7FA189 */
+  color: var(--accent);                      /* hijau */
   font-weight: 700;
   box-shadow: 0 2px 8px rgba(0,0,0,0.04);
   margin-bottom: 12px;
