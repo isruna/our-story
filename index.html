@@ -4,16 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Adis & Ratna — A Month in Messages</title>
-<meta name="version" content="1.0.0">
-<script>
-  // Cache-busting — bump VERSION string on every update to force hard reload
-  const VERSION = "1.0.1";
-  const stored = localStorage.getItem("app_version");
-  if (stored !== VERSION) {
-    localStorage.setItem("app_version", VERSION);
-    if (stored !== null) window.location.reload(true);
-  }
-</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;1,9..40,300&display=swap" rel="stylesheet">
@@ -102,7 +92,7 @@
   }
   .cover-photo {
     position: absolute; inset: 0;
-    background: url('assets/image-1.jpeg') center/cover no-repeat;
+    /* bg set by JS */
     filter: brightness(0.55) saturate(0.8);
   }
   .cover-photo::after {
@@ -549,7 +539,7 @@
     <!-- ── SLIDE 0 — COVER ─────────────────────────── -->
     <div class="slide active" id="slide-0">
       <div class="cover-photo">
-        <img src="assets/image-1.jpeg" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'">
+        <img data-asset="assets/image-1.jpeg" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'">
       </div>
       <div class="cover-content">
         <div class="cover-eyebrow anim-in">satu bulan yang mengubah segalanya</div>
@@ -648,11 +638,11 @@
     <div class="slide" id="slide-2">
       <div class="photo-grid-slide">
         <div class="photo-grid-bg">
-          <div class="photo-cell"><img src="assets/image-2.jpeg" alt="" onerror="this.parentElement.innerHTML='<div class=\'photo-placeholder\'><span>📷</span></div>'"></div>
-          <div class="photo-cell"><img src="assets/image-3.jpeg" alt="" onerror="this.parentElement.innerHTML='<div class=\'photo-placeholder\'><span>📷</span></div>'"></div>
-          <div class="photo-cell"><img src="assets/image-4.jpeg" alt="" onerror="this.parentElement.innerHTML='<div class=\'photo-placeholder\'><span>📷</span></div>'"></div>
-          <div class="photo-cell"><img src="assets/image-5.jpeg" alt="" onerror="this.parentElement.innerHTML='<div class=\'photo-placeholder\'><span>📷</span></div>'"></div>
-          <div class="photo-cell" style="grid-column:1/-1;"><img src="assets/image-6.jpeg" alt="" onerror="this.parentElement.innerHTML='<div class=\'photo-placeholder\'><span>📷</span></div>'"></div>
+          <div class="photo-cell"><img data-asset="assets/image-2.jpeg" alt="" onerror="this.parentElement.innerHTML='<div class=\'photo-placeholder\'><span>📷</span></div>'"></div>
+          <div class="photo-cell"><img data-asset="assets/image-3.jpeg" alt="" onerror="this.parentElement.innerHTML='<div class=\'photo-placeholder\'><span>📷</span></div>'"></div>
+          <div class="photo-cell"><img data-asset="assets/image-4.jpeg" alt="" onerror="this.parentElement.innerHTML='<div class=\'photo-placeholder\'><span>📷</span></div>'"></div>
+          <div class="photo-cell"><img data-asset="assets/image-5.jpeg" alt="" onerror="this.parentElement.innerHTML='<div class=\'photo-placeholder\'><span>📷</span></div>'"></div>
+          <div class="photo-cell" style="grid-column:1/-1;"><img data-asset="assets/image-6.jpeg" alt="" onerror="this.parentElement.innerHTML='<div class=\'photo-placeholder\'><span>📷</span></div>'"></div>
         </div>
         <div class="photo-grid-overlay">
           <div class="slide-label anim-in">Momen</div>
@@ -896,7 +886,7 @@
 
     <!-- ── SLIDE 8 — LOVE LETTER ──────────────────── -->
     <div class="slide" id="slide-8">
-      <img class="letter-photo" src="assets/image-2.jpeg" alt="" onerror="this.style.display='none'">
+      <img class="letter-photo" data-asset="assets/image-2.jpeg" alt="" onerror="this.style.display='none'">
       <div class="letter-inner">
         <div class="letter-greeting anim-in">Kepada Ratna &amp; Adis,</div>
         <div class="letter-body anim-in">
@@ -913,7 +903,7 @@
 
 
     <!-- MUSIC PLAYER -->
-    <audio id="bgAudio" src="assets/song.mp3" loop preload="none"></audio>
+    <audio id="bgAudio" data-asset="assets/song.mp3" loop preload="none"></audio>
     <div id="music-player" class="paused">
       <div class="music-btn" id="musicBtn" onclick="toggleMusic()" title="Play / Pause">▶</div>
       <div class="music-info">
@@ -938,6 +928,27 @@
 </div><!-- /app -->
 
 <script>
+  // ── VERSION — bump this string on every deploy to bust browser cache ──
+  const VERSION = "1.0.1";
+
+  // Inject ?v=VERSION into every asset URL (images + audio)
+  document.querySelectorAll('[data-asset]').forEach(el => {
+    const url = el.getAttribute('data-asset') + '?v=' + VERSION;
+    if (el.tagName === 'AUDIO') {
+      el.src = url;
+    } else {
+      el.src = url;
+    }
+  });
+
+  // Inject version into the CSS background image too
+  const coverPhoto = document.querySelector('.cover-photo');
+  if (coverPhoto) {
+    coverPhoto.style.backgroundImage = "url('assets/image-1.jpeg?v=" + VERSION + "')";
+    coverPhoto.style.backgroundSize = 'cover';
+    coverPhoto.style.backgroundPosition = 'center';
+  }
+
   const TOTAL = 9;
   const DURATION = 9000; // ms per slide
 
