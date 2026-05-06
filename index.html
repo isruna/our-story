@@ -3,18 +3,11 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<!-- 
-  ==============================================================
-  SCRIPT ANTI-CACHE SUPER AGRESIF
-  Akan langsung me-lempar pengunjung ke URL dengan ?v=...
-  ==============================================================
--->
+<!-- SCRIPT ANTI-CACHE SUPER AGRESIF -->
 <script>
   (function() {
     var loc = window.location;
     var currentSearch = loc.search;
-    
-    // Jika di URL belum ada '?v='
     if (currentSearch.indexOf('v=') === -1) {
       var separator = currentSearch.indexOf('?') === -1 ? '?' : '&';
       var newUrl = loc.origin + loc.pathname + currentSearch + separator + 'v=' + new Date().getTime() + loc.hash;
@@ -69,6 +62,26 @@
     .story-viewport { height: min(100vh, 932px); border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); }
   }
 
+  /* ─── LAYAR PEMBUKA (UNTUK MEMICU LAGU) ────────── */
+  #intro-screen {
+    position: absolute; inset: 0; z-index: 9999;
+    background: var(--bg-main);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    transition: opacity 0.5s ease;
+  }
+  .intro-title {
+    font-family: 'Cormorant Garamond', serif; font-size: 32px; font-style: italic; color: var(--text-title); margin-bottom: 30px;
+  }
+  .intro-btn {
+    padding: 14px 36px; background: var(--accent); color: #fff;
+    border-radius: 100px; font-weight: 600; letter-spacing: 2px;
+    text-transform: uppercase; font-size: 12px; cursor: pointer;
+    box-shadow: 0 8px 20px rgba(127,161,137,0.4);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+
+  /* ─── PROGRESS BAR ─────────────────────────────── */
   .progress-bar {
     position: absolute; top: max(12px, env(safe-area-inset-top)); left: 8px; right: 8px; z-index: 100; display: flex; gap: 4px;
   }
@@ -87,10 +100,7 @@
     color: rgba(30,51,37,0.3); font-size: 36px; font-weight: 300;
     z-index: 90; pointer-events: none; animation: pulseRight 1.5s ease-in-out infinite;
   }
-  @keyframes pulseRight {
-    0%, 100% { transform: translate(0, -50%); opacity: 0.15; }
-    50% { transform: translate(6px, -50%); opacity: 0.8; }
-  }
+  @keyframes pulseRight { 0%, 100% { transform: translate(0, -50%); opacity: 0.15; } 50% { transform: translate(6px, -50%); opacity: 0.8; } }
 
   .slide { position: absolute; inset: 0; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
   .slide.active { opacity: 1; pointer-events: all; }
@@ -99,10 +109,13 @@
   .slide-label { font-size: 10.5px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; font-weight: 600; }
   .slide-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(34px, 10vw, 48px); font-weight: 600; font-style: italic; color: var(--text-title); line-height: 1.1; margin-bottom: 24px; }
 
-  /* SLIDE 0 */
+  /* ─── FOTO FULL BACKGROUND WRAPPER ──────────────── */
+  .full-bg-wrap { position: absolute; inset: 0; background: var(--bg-main); }
+  .full-bg-wrap img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.85); }
+  .overlay-grad { position: absolute; inset: 0; background: linear-gradient(to top, var(--bg-main) 0%, rgba(244,247,246,0.6) 45%, transparent 100%); }
+
+  /* SLIDE 0: COVER */
   #slide-0 { background: var(--bg-main); display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 60px; }
-  .cover-photo { position: absolute; inset: 0; filter: brightness(0.9) saturate(0.85); }
-  .cover-photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, var(--bg-main) 0%, rgba(244,247,246,0.7) 40%, transparent 100%); }
   .cover-content { position: relative; z-index: 2; text-align: center; color: var(--text-body); padding: 0 20px; }
   .cover-eyebrow { font-size: 10px; letter-spacing: 3.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; font-weight: 600; }
   .cover-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(54px, 15vw, 76px); font-weight: 600; line-height: 1; font-style: italic; color: var(--text-title); margin-bottom: 8px; }
@@ -111,7 +124,7 @@
   .cover-date-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--accent-soft); border: 1px solid var(--accent); border-radius: 100px; padding: 6px 16px; margin-top: 20px; color: var(--text-title); font-size: 11px; letter-spacing: 1px; font-weight: 600; }
   .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--text-title); }
 
-  /* SLIDE 1 */
+  /* SLIDE 1: THE ARC */
   #slide-1 { background: var(--bg-main); }
   .arc-body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
   .arc-phase { display: flex; gap: 14px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--accent-soft); position: relative; }
@@ -124,25 +137,22 @@
   .phase-name { font-family: 'Cormorant Garamond', serif; font-size: 20px; color: var(--text-title); margin-bottom: 4px; font-style: italic; line-height: 1.1; font-weight: 600; }
   .phase-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; font-weight: 400; }
 
-  /* SLIDE 2 */
-  #slide-2 { background: var(--bg-main); }
-  .photo-grid-bg { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr 1fr; gap: 4px; padding: 4px; }
-  .photo-cell { overflow: hidden; background: var(--accent-soft); border-radius: 8px; }
-  .photo-cell img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.85); }
-  .photo-grid-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(244,247,246,0.1) 0%, rgba(244,247,246,0.8) 50%, var(--bg-main) 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 40px 24px 60px; }
+  /* SLIDES 2, 3, 4: FOTO FULL SCREEN */
+  .photo-slide { background: var(--bg-main); }
+  .photo-slide-content { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding: 40px 24px 60px; }
   .moments-title { font-family: 'Cormorant Garamond', serif; font-size: 46px; font-weight: 600; font-style: italic; color: var(--text-title); line-height: 1; margin-bottom: 12px; }
-  .moments-sub { font-size: 12px; color: var(--text-muted); font-weight: 400; line-height: 1.5; }
+  .moments-sub { font-size: 12px; color: var(--text-body); font-weight: 400; line-height: 1.5; }
 
-  /* SLIDE 3 */
-  #slide-3 { background: var(--bg-main); }
+  /* SLIDE 5: EMOJIS */
+  #slide-5 { background: var(--bg-main); }
   .emoji-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 10px; }
   .emoji-card { background: var(--bg-card); border: 1px solid var(--accent-soft); box-shadow: 0 4px 12px rgba(0,0,0,0.03); border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 6px; position: relative; overflow: hidden; }
   .emoji-big { font-size: 32px; line-height: 1; }
   .emoji-count { font-size: 20px; font-weight: 600; color: var(--accent); letter-spacing: -1px; }
   .emoji-label { font-size: 11px; color: var(--text-muted); font-weight: 400; line-height: 1.35; }
 
-  /* SLIDE 4 */
-  #slide-4 { background: var(--bg-main); overflow: hidden; }
+  /* SLIDE 6: NUMBERS */
+  #slide-6 { background: var(--bg-main); overflow: hidden; }
   .numbers-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
   .num-card { background: var(--bg-card); border: 1px solid var(--accent-soft); box-shadow: 0 4px 12px rgba(0,0,0,0.03); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; justify-content: center; }
   .num-card.wide { grid-column: 1 / -1; }
@@ -153,16 +163,16 @@
   .mini-bar { flex: 1; border-radius: 2px 2px 0 0; background: linear-gradient(to top, var(--accent), var(--highlight)); opacity: 0.9; transform-origin: bottom; transform: scaleY(0); animation: barUp 1s ease both; }
   @keyframes barUp { to { transform: scaleY(1); } }
 
-  /* SLIDE 5 */
-  #slide-5 { background: var(--bg-main); }
+  /* SLIDE 7: PATTERNS */
+  #slide-7 { background: var(--bg-main); }
   .pattern-list { display: flex; flex-direction: column; gap: 12px; flex: 1; justify-content: center; }
   .pattern-item { display: flex; gap: 12px; align-items: flex-start; padding: 14px; border-radius: 14px; background: var(--bg-card); border: 1px solid var(--accent-soft); box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
   .pattern-icon { width: 36px; height: 36px; border-radius: 10px; background: var(--accent-soft); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
   .pattern-name { font-size: 14px; color: var(--text-title); font-weight: 600; margin-bottom: 4px; }
   .pattern-desc { font-size: 12px; color: var(--text-muted); font-weight: 400; line-height: 1.45; }
 
-  /* SLIDE 6 */
-  #slide-6 { background: var(--bg-main); }
+  /* SLIDE 8: PHRASES */
+  #slide-8 { background: var(--bg-main); }
   .phrase-bg-art { position: absolute; inset: 0; background: radial-gradient(ellipse at 20% 80%, rgba(240,158,140,0.1), transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(127,161,137,0.1), transparent 50%); }
   .phrase-list { display: flex; flex-direction: column; gap: 14px; flex: 1; justify-content: center; z-index: 2; position: relative;}
   .phrase-chip { display: inline-flex; align-items: center; gap: 10px; background: var(--bg-card); border: 1px solid var(--accent-soft); border-radius: 100px; padding: 10px 16px; font-size: 12px; color: var(--text-title); box-shadow: 0 4px 12px rgba(0,0,0,0.02); font-weight: 600;}
@@ -170,8 +180,8 @@
   .phrase-meaning { font-size: 11px; color: var(--text-muted); font-weight: 400; padding-left: 16px; margin-top: 4px; font-style: italic; }
   .phrase-row { display: flex; flex-direction: column; align-items: flex-start; }
 
-  /* SLIDE 7 */
-  #slide-7 { background: var(--bg-main); }
+  /* SLIDE 9: QUOTES */
+  #slide-9 { background: var(--bg-main); }
   .quote-slide-inner { position: absolute; inset: 0; padding: calc(max(20px, env(safe-area-inset-top)) + 40px) 0 40px; display: flex; flex-direction: column; }
   .quote-slide-header { padding: 0 24px; margin-bottom: 16px; }
   .quotes-container { flex: 1; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
@@ -184,8 +194,8 @@
   .q-sender-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--highlight); }
   .q-sender { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-title); font-weight: 600;}
 
-  /* SLIDE 8 */
-  #slide-8 { background: var(--bg-main); }
+  /* SLIDE 10: LOVE LETTER */
+  #slide-10 { background: var(--bg-main); }
   .letter-inner { position: absolute; inset: 0; padding: calc(max(20px, env(safe-area-inset-top)) + 40px) 24px 60px; display: flex; flex-direction: column; justify-content: center; }
   .letter-greeting { font-family: 'Cormorant Garamond', serif; font-size: 15px; color: var(--accent); font-style: italic; margin-bottom: 16px; font-weight: 600; }
   .letter-body { font-family: 'Cormorant Garamond', serif; font-size: 18px; line-height: 1.6; color: var(--text-body); font-weight: 400; margin-bottom: 30px; position: relative; z-index: 2;}
@@ -227,21 +237,27 @@
   @keyframes bar1 { from { height: 3px; } to { height: 12px; } }
   @keyframes bar2 { from { height: 8px; } to { height: 3px; } }
   @keyframes bar3 { from { height: 2px; } to { height: 10px; } }
-
-  .photo-placeholder { width: 100%; height: 100%; background: var(--accent-soft); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px; }
-  .photo-placeholder span { font-size: 24px; opacity: 0.3; }
 </style>
 </head>
 <body>
 <div id="app">
   <div class="story-viewport">
 
+    <!-- LAYAR PEMBUKA (Wajib untuk Autoplay Audio HP) -->
+    <div id="intro-screen">
+      <div class="intro-title">Adis & Ratna</div>
+      <div class="intro-btn" onclick="startStory()">Buka Cerita</div>
+    </div>
+
     <div class="progress-bar ui-element" id="progressBar"></div>
     <div class="next-arrow-hint ui-element">&rsaquo;</div>
 
     <!-- ── SLIDE 0 — COVER ─────────────────────────── -->
-    <div class="slide active" id="slide-0">
-      <div class="cover-photo"></div>
+    <div class="slide" id="slide-0">
+      <div class="full-bg-wrap">
+        <img data-asset="assets/image-1.jpeg" alt="">
+        <div class="overlay-grad"></div>
+      </div>
       <div class="cover-content">
         <div class="cover-eyebrow anim-in">satu bulan yang mengubah segalanya</div>
         <div class="cover-title anim-in">Adis<br>&amp;<br>Ratna</div>
@@ -268,24 +284,47 @@
       </div>
     </div>
 
-    <!-- ── SLIDE 2 — PHOTOS ────────────────────────── -->
-    <div class="slide" id="slide-2">
-      <div class="photo-grid-bg">
-        <div class="photo-cell"><img data-asset="assets/image-2.jpeg" alt="" onerror="this.parentElement.innerHTML='<div class=\'photo-placeholder\'><span>📷</span></div>'"></div>
-        <div class="photo-cell"><img data-asset="assets/image-3.jpeg" alt="" onerror="this.parentElement.innerHTML='<div class=\'photo-placeholder\'><span>📷</span></div>'"></div>
-        <div class="photo-cell"><img data-asset="assets/image-4.jpeg" alt="" onerror="this.parentElement.innerHTML='<div class=\'photo-placeholder\'><span>📷</span></div>'"></div>
-        <div class="photo-cell"><img data-asset="assets/image-5.jpeg" alt="" onerror="this.parentElement.innerHTML='<div class=\'photo-placeholder\'><span>📷</span></div>'"></div>
-        <div class="photo-cell" style="grid-column:1/-1;"><img data-asset="assets/image-6.jpeg" alt="" onerror="this.parentElement.innerHTML='<div class=\'photo-placeholder\'><span>📷</span></div>'"></div>
+    <!-- ── SLIDE 2 — FOTO 1 (Background Penuh) ─────── -->
+    <div class="slide photo-slide" id="slide-2">
+      <div class="full-bg-wrap">
+        <img data-asset="assets/image-2.jpeg" alt="">
+        <div class="overlay-grad"></div>
       </div>
-      <div class="photo-grid-overlay">
-        <div class="slide-label anim-in">Momen</div>
+      <div class="photo-slide-content">
+        <div class="slide-label anim-in">Momen Pertama</div>
         <div class="moments-title anim-in">Wajah<br>di Balik<br>Kata</div>
-        <div class="moments-sub anim-in">Setiap foto menyimpan cerita yang tak bisa diketik. Ini adalah kamu — nyata, hangat, dan tak tergantikan.</div>
+        <div class="moments-sub anim-in">Setiap foto menyimpan cerita yang tak bisa diketik. Ini adalah kamu — nyata dan hangat.</div>
       </div>
     </div>
 
-    <!-- ── SLIDE 3 — EMOJIS ───────────────────────── -->
-    <div class="slide" id="slide-3">
+    <!-- ── SLIDE 3 — FOTO 2 (Background Penuh) ─────── -->
+    <div class="slide photo-slide" id="slide-3">
+      <div class="full-bg-wrap">
+        <img data-asset="assets/image-3.jpeg" alt="">
+        <div class="overlay-grad"></div>
+      </div>
+      <div class="photo-slide-content">
+        <div class="slide-label anim-in">Terekam Jelas</div>
+        <div class="moments-title anim-in">Senyum<br>yang<br>Sama</div>
+        <div class="moments-sub anim-in">Dari obrolan larut malam, hingga tawa yang terekam di layar.</div>
+      </div>
+    </div>
+
+    <!-- ── SLIDE 4 — FOTO 3 (Background Penuh) ─────── -->
+    <div class="slide photo-slide" id="slide-4">
+      <div class="full-bg-wrap">
+        <img data-asset="assets/image-4.jpeg" alt="">
+        <div class="overlay-grad"></div>
+      </div>
+      <div class="photo-slide-content">
+        <div class="slide-label anim-in">Memori</div>
+        <div class="moments-title anim-in">Jejak<br>Kita<br>Berdua</div>
+        <div class="moments-sub anim-in">Bulan ini bukan sekadar waktu berlalu, melainkan kumpulan detik yang tak tergantikan.</div>
+      </div>
+    </div>
+
+    <!-- ── SLIDE 5 — EMOJIS ───────────────────────── -->
+    <div class="slide" id="slide-5">
       <div class="slide-inner">
         <div class="slide-label anim-in">Bahasa Kita</div>
         <div class="slide-title anim-in">Emosi<br>yang Terkirim</div>
@@ -300,8 +339,8 @@
       </div>
     </div>
 
-    <!-- ── SLIDE 4 — NUMBERS ──────────────────────── -->
-    <div class="slide" id="slide-4">
+    <!-- ── SLIDE 6 — NUMBERS ──────────────────────── -->
+    <div class="slide" id="slide-6">
       <div class="slide-inner">
         <div class="slide-label anim-in">Kalau dihitung</div>
         <div class="slide-title anim-in">Betapa<br>Seringnya<br>Kita</div>
@@ -323,8 +362,8 @@
       </div>
     </div>
 
-    <!-- ── SLIDE 5 — PATTERNS ─────────────────────── -->
-    <div class="slide" id="slide-5">
+    <!-- ── SLIDE 7 — PATTERNS ─────────────────────── -->
+    <div class="slide" id="slide-7">
       <div class="slide-inner">
         <div class="slide-label anim-in">Kebiasaan</div>
         <div class="slide-title anim-in">Ritme<br>Harian Kita</div>
@@ -337,8 +376,8 @@
       </div>
     </div>
 
-    <!-- ── SLIDE 6 — PHRASES ──────────────────────── -->
-    <div class="slide" id="slide-6">
+    <!-- ── SLIDE 8 — PHRASES ──────────────────────── -->
+    <div class="slide" id="slide-8">
       <div class="slide-inner">
         <div class="phrase-bg-art"></div>
         <div class="slide-label anim-in" style="position:relative;">Kosakata Kita</div>
@@ -353,8 +392,8 @@
       </div>
     </div>
 
-    <!-- ── SLIDE 7 — QUOTES ───────────────────────── -->
-    <div class="slide" id="slide-7">
+    <!-- ── SLIDE 9 — QUOTES ───────────────────────── -->
+    <div class="slide" id="slide-9">
       <div class="quote-slide-inner">
         <div class="quote-slide-header">
           <div class="slide-label anim-in">Kutipan</div>
@@ -369,9 +408,9 @@
       </div>
     </div>
 
-    <!-- ── SLIDE 8 — LOVE LETTER ──────────────────── -->
-    <div class="slide" id="slide-8">
-      <img class="letter-photo" data-asset="assets/image-2.jpeg" alt="" onerror="this.style.display='none'">
+    <!-- ── SLIDE 10 — LOVE LETTER ──────────────────── -->
+    <div class="slide" id="slide-10">
+      <img class="letter-photo" data-asset="assets/image-5.jpeg" alt="" onerror="this.style.display='none'">
       <div class="letter-inner">
         <div class="letter-greeting anim-in">Kepada Ratna &amp; Adis,</div>
         <div class="letter-body anim-in">
@@ -402,6 +441,7 @@
 </div>
 
 <script>
+  // ── SCRIPT ANTI CACHE UNTUK ASSET/GAMBAR ────────────────────────────────
   const urlParams = new URLSearchParams(window.location.search);
   const version = urlParams.get('v') || new Date().getTime(); 
   
@@ -411,21 +451,15 @@
     else el.src = url;
   });
 
-  const coverPhoto = document.querySelector('.cover-photo');
-  if (coverPhoto) {
-    coverPhoto.style.backgroundImage = "url('assets/image-1.jpeg?v=" + version + "')";
-    coverPhoto.style.backgroundSize = "cover";
-    coverPhoto.style.backgroundPosition = "center";
-  }
-
   // ── LOGIK STORY & TIMER ──────────────────────────────────
-  const TOTAL = 9;
+  const TOTAL = 11; // Total slide sekarang naik jadi 11 karena foto dipisah
   const DURATION = 9000; 
 
   let current = 0;
   let timerId = null;
   let slideStartTime = 0;
   let timeRemaining = DURATION;
+  let storyStarted = false;
 
   const pb = document.getElementById('progressBar');
   for (let i = 0; i < TOTAL; i++) {
@@ -437,7 +471,23 @@
 
   function getSegs() { return pb.querySelectorAll('.progress-seg'); }
 
+  // ── TOMBOL START (SOLUSI AUTOPLAY LAGU DI HP) ────────────
+  function startStory() {
+    const introScreen = document.getElementById('intro-screen');
+    introScreen.style.opacity = '0';
+    
+    // Play Lagu
+    playAudio();
+
+    setTimeout(() => {
+      introScreen.style.display = 'none';
+      storyStarted = true;
+      goTo(0); // Mulai slide pertama
+    }, 400);
+  }
+
   function startTimer(remTime) {
+    if (!storyStarted) return;
     clearTimeout(timerId);
     timeRemaining = remTime;
     slideStartTime = Date.now();
@@ -446,6 +496,7 @@
   }
 
   function pauseTimer() {
+    if (!storyStarted) return;
     clearTimeout(timerId);
     let elapsed = Date.now() - slideStartTime;
     timeRemaining -= elapsed;
@@ -477,7 +528,7 @@
       }
     });
 
-    if (idx === 4) buildHourChart();
+    if (idx === 6) buildHourChart(); // Slide angka bergeser ke indeks 6
 
     timeRemaining = DURATION;
     startTimer(timeRemaining);
@@ -493,25 +544,45 @@
   let ptrStartX = 0, ptrStartY = 0, ptrStartTime = 0;
 
   vp.addEventListener('pointerdown', (e) => {
-    if(e.target.closest('#music-player')) return;
-    ptrStartX = e.clientX; ptrStartY = e.clientY; ptrStartTime = Date.now();
-    isHolding = true; pauseTimer(); 
-    uiHideTimeout = setTimeout(() => { document.body.classList.add('is-hidden-ui'); }, 150);
+    if(!storyStarted || e.target.closest('#music-player') || e.target.closest('#intro-screen')) return;
+
+    ptrStartX = e.clientX;
+    ptrStartY = e.clientY;
+    ptrStartTime = Date.now();
+    
+    isHolding = true;
+    pauseTimer(); 
+    
+    uiHideTimeout = setTimeout(() => {
+      document.body.classList.add('is-hidden-ui');
+    }, 150);
   });
 
   vp.addEventListener('pointerup', (e) => {
-    if(e.target.closest('#music-player')) return;
-    clearTimeout(uiHideTimeout); document.body.classList.remove('is-hidden-ui');
+    if(!storyStarted || e.target.closest('#music-player') || e.target.closest('#intro-screen')) return;
+    
+    clearTimeout(uiHideTimeout);
+    document.body.classList.remove('is-hidden-ui');
+
     if (!isHolding) return;
     isHolding = false;
-    const dx = e.clientX - ptrStartX; const dy = e.clientY - ptrStartY; const dt = Date.now() - ptrStartTime;
+
+    const dx = e.clientX - ptrStartX;
+    const dy = e.clientY - ptrStartY;
+    const dt = Date.now() - ptrStartTime;
 
     if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
       if (dx < 0) nextSlide(); else prevSlide();
-    } else if (dt < 250) {
+    } 
+    else if (dt < 250) {
       const rect = vp.getBoundingClientRect();
-      if (e.clientX - rect.left < rect.width * 0.3) prevSlide(); else nextSlide();
-    } else {
+      if (e.clientX - rect.left < rect.width * 0.3) {
+        prevSlide();
+      } else {
+        nextSlide();
+      }
+    } 
+    else {
       startTimer(timeRemaining);
     }
   });
@@ -543,8 +614,6 @@
     audio.play().then(() => { musicStarted = true; musicPlaying = true; setPlaying(true); }).catch(()=>{});
   }
 
-  window.addEventListener('pointerup', () => { if(!musicStarted) playAudio(); }, { once: true });
-
   // ── GRAFIK MINI ──────────────────────────────
   const hourData = [248,431,782,472,547,121,127,401,184,63,180,233,268,274,934,1018,553,14,1,5,5,0];
   function buildHourChart() {
@@ -559,8 +628,6 @@
       c.appendChild(bar);
     });
   }
-
-  goTo(0);
 </script>
 </body>
 </html>
