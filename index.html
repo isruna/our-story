@@ -194,66 +194,80 @@
   .q-sender-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--highlight); }
   .q-sender { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-title); font-weight: 600;}
 
-/* ── SLIDE 10: LAYOUT BARU KIRI-TEKS KANAN-FOTO ── */
+/* ── SLIDE 10: LAYOUT KIRI FOTO, KANAN TEKS + ANIMASI SIDE-IMPACT ── */
 #slide-10 {
   background: var(--bg-main);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: calc(max(24px, env(safe-area-inset-top)) + 20px) 20px 100px;
+  padding: calc(max(24px, env(safe-area-inset-top)) + 16px) 16px 100px;
 }
 
 .letter-row {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 24px;
+  flex-direction: row;          /* kiri: foto, kanan: teks */
+  gap: 18px;
   width: 100%;
   max-width: 400px;
   height: 100%;
 }
 
-.letter-left {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-width: 0; /* agar teks bisa menyusut */
-}
-
+/* ── Bagian kiri: foto ── */
 .letter-right {
-  width: 130px;               /* lebar foto */
+  width: 120px;
   flex-shrink: 0;
+  align-self: flex-end;        /* dorong ke bawah */
   display: flex;
-  align-items: center;
-   align-self: flex-end; 
+  align-items: flex-end;
+  justify-content: center;
 }
 
 .letter-photo {
   width: 100%;
   height: auto;
-  max-height: 100%;
+  max-height: 320px;
   object-fit: cover;
-  border-radius: 16px;
-  /* HAPUS mask-image, HAPUS filter brightness */
+  border-radius: 18px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+
+  /* Animasi side-impact setiap kali slide 10 aktif */
+  opacity: 0;
+  transform: translateX(60px);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s,
+              opacity 0.5s ease 0.2s;
 }
 
-/* Gaya teks tetap sama */
+.slide#slide-10.active .letter-photo {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ── Bagian kanan: teks ── */
+.letter-left {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-right: 4px;
+}
+
+/* Gaya teks */
 .letter-greeting {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 15px;
+  font-size: 14px;
   color: var(--accent);
   font-style: italic;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   font-weight: 600;
 }
 
 .letter-body {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 16px;
-  line-height: 1.5;
+  font-size: 15px;
+  line-height: 1.45;
   color: var(--text-body);
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .letter-body em {
@@ -263,14 +277,14 @@
 }
 
 .center-heart {
-  font-size: 20px;
+  font-size: 18px;
   color: var(--highlight);
-  margin: 12px 0 8px;
+  margin: 8px 0 6px;
 }
 
 .letter-sig {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 30px;
+  font-size: 26px;
   font-style: italic;
   font-weight: 600;
   color: var(--text-title);
@@ -278,11 +292,10 @@
 }
 
 .letter-date {
-  font-size: 11px;
+  font-size: 10px;
   letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--text-muted);
-  margin-top: 4px;
 }
 
 /* Animasi pada blok kiri */
@@ -335,77 +348,6 @@
   z-index: 3;
 }
 
-/* ── SLIDE 10: LAYOUT PAS, TEKS KANAN, FOTO KIRI ── */
-#slide-10 {
-  background: var(--bg-main);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: calc(max(24px, env(safe-area-inset-top)) + 16px) 16px 100px;
-}
-
-.letter-row {
-  display: flex;
-  flex-direction: row;
-  gap: 18px;
-  width: 100%;
-  max-width: 400px;
-  height: 100%;
-}
-
-/* Bagian kiri – foto */
-.letter-right {
-  width: 120px;              /* sedikit lebih kecil */
-  flex-shrink: 0;
-  align-self: flex-end;      /* tetap di bawah */
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-}
-
-.letter-photo {
-  width: 100%;
-  height: auto;
-  max-height: 320px;         /* batas tinggi agar tidak berlebihan */
-  object-fit: cover;
-  border-radius: 18px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-}
-
-/* Bagian kanan – teks */
-.letter-left {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-right: 4px;
-}
-
-/* Ukuran teks disesuaikan agar tidak penuh */
-.letter-greeting {
-  font-size: 14px;
-  margin-bottom: 12px;
-}
-
-.letter-body {
-  font-size: 15px;          /* sedikit turun */
-  line-height: 1.45;
-  margin-bottom: 16px;
-}
-
-.center-heart {
-  font-size: 18px;
-  margin: 8px 0 6px;
-}
-
-.letter-sig {
-  font-size: 26px;
-}
-
-.letter-date {
-  font-size: 10px;
-}
 
   /* Label slide di slide foto (2,3,4) – lebih kontras di atas gambar */
 /* Label di slide foto – sekarang berbentuk chip putih */
@@ -426,18 +368,7 @@
   box-shadow: 0 2px 8px rgba(0,0,0,0.04);
   margin-bottom: 12px;
 }
-  /* Foto di slide terakhir akan meluncur dari kanan saat slide aktif */
-.slide#slide-10 .letter-photo {
-  opacity: 0;
-  transform: translateX(60px);
-  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s,
-              opacity 0.5s ease 0.2s;
-}
-
-.slide#slide-10.active .letter-photo {
-  opacity: 1;
-  transform: translateX(0);
-}
+  
 </style>
 </head>
 <body>
@@ -610,13 +541,11 @@
     </div>
 
     <!-- ── SLIDE 10 — LOVE LETTER ──────────────────── -->
-  <div class="slide" id="slide-10">
+    <div class="slide" id="slide-10">
   <div class="letter-row">
-    <!-- FOTO DULU → SEKARANG DI KIRI -->
     <div class="letter-right">
       <img class="letter-photo" data-asset="assets/image-5.jpeg" alt="">
     </div>
-    <!-- TEKS SETELAH FOTO → SEKARANG DI KANAN -->
     <div class="letter-left anim-in">
       <div class="letter-greeting">Kepada Ratna &amp; Adis,</div>
       <div class="letter-body">
