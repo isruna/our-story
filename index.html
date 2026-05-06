@@ -1,20 +1,24 @@
+--- START OF FILE index.html ---
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
 <!-- 
   ==============================================================
-  TRIK ANTI-CACHE GITHUB PAGES
-  Script ini akan memaksa URL menambahkan ?v=waktu_saat_ini.
-  Sehingga setiap kali link dibuka, browser mengira ini halaman baru 
-  dan akan mengunduh HTML, CSS, Gambar & Lagu terbaru!
+  SCRIPT ANTI-CACHE SUPER AGRESIF
+  Akan langsung me-lempar pengunjung ke URL dengan ?v=...
   ==============================================================
 -->
 <script>
   (function() {
-    var url = new URL(window.location.href);
-    if (!url.searchParams.has('v')) {
-      url.searchParams.set('v', new Date().getTime());
-      window.location.replace(url.toString());
+    var loc = window.location;
+    var currentSearch = loc.search;
+    
+    // Jika di URL belum ada '?v='
+    if (currentSearch.indexOf('v=') === -1) {
+      var separator = currentSearch.indexOf('?') === -1 ? '?' : '&';
+      var newUrl = loc.origin + loc.pathname + currentSearch + separator + 'v=' + new Date().getTime() + loc.hash;
+      window.location.replace(newUrl);
     }
   })();
 </script>
@@ -30,38 +34,31 @@
 
   :root {
     /* NUANSA FRESH: MATCHA MORNING & PEACH */
-    --bg-main: #F4F7F6;      /* Krim putih terang kehijauan */
-    --bg-card: #FFFFFF;      /* Putih bersih untuk kotak */
-    --text-title: #1E3325;   /* Hijau gelap */
-    --text-body: #3C5444;    /* Hijau daun redup */
-    --text-muted: #799482;   /* Hijau abu-abu */
-    --accent: #7FA189;       /* Hijau Matcha */
-    --accent-soft: #D3E0D7;  /* Hijau Matcha sangat pudar */
-    --highlight: #F09E8C;    /* Soft Coral / Peach */
-    --sun: #E8C374;          /* Soft Gold */
+    --bg-main: #F4F7F6;      
+    --bg-card: #FFFFFF;      
+    --text-title: #1E3325;   
+    --text-body: #3C5444;    
+    --text-muted: #799482;   
+    --accent: #7FA189;       
+    --accent-soft: #D3E0D7;  
+    --highlight: #F09E8C;    
+    --sun: #E8C374;          
   }
 
   html, body {
     width: 100%; height: 100%; overflow: hidden;
-    background: #E8ECEA; /* Warna latar belakang luar */
+    background: #E8ECEA; 
     font-family: 'DM Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
   }
 
-  /* ─── CONTAINER 9:16 MOBILE PRIORITY ────────────── */
   #app { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; }
 
   .story-viewport {
-    position: relative;
-    width: 100%; 
-    height: 100dvh; 
-    max-width: 430px; 
-    overflow: hidden;
-    background: var(--bg-main);
-    touch-action: none; 
+    position: relative; width: 100%; height: 100dvh; max-width: 430px; 
+    overflow: hidden; background: var(--bg-main); touch-action: none; 
   }
 
-  /* Gradasi atas agar bar tetap terlihat jelas */
   .story-viewport::before {
     content: ''; position: absolute; top: 0; left: 0; right: 0; height: 130px;
     background: linear-gradient(to bottom, rgba(0,0,0,0.4), transparent);
@@ -72,20 +69,15 @@
     .story-viewport { height: min(100vh, 932px); border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); }
   }
 
-  /* ─── PROGRESS BAR (DIJAMIN TIDAK TERPOTONG) ───── */
   .progress-bar {
-    position: absolute; top: max(12px, env(safe-area-inset-top)); left: 8px; right: 8px; z-index: 100;
-    display: flex; gap: 4px;
+    position: absolute; top: max(12px, env(safe-area-inset-top)); left: 8px; right: 8px; z-index: 100; display: flex; gap: 4px;
   }
-  .progress-seg {
-    flex: 1; height: 2px; background: rgba(255,255,255,0.4); border-radius: 2px; overflow: hidden;
-  }
+  .progress-seg { flex: 1; height: 2px; background: rgba(255,255,255,0.4); border-radius: 2px; overflow: hidden; }
   .progress-fill { height: 100%; background: #fff; border-radius: 2px; transform-origin: left; transform: scaleX(0); }
   .progress-seg.done .progress-fill { transform: scaleX(1); }
   .progress-seg.active .progress-fill { animation: fillBar var(--dur, 9s) linear forwards; }
   @keyframes fillBar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 
-  /* ─── UI ELEMENT FADE & ANIMATION ──────────────── */
   .ui-element { transition: opacity 0.25s ease; }
   body.is-hidden-ui .ui-element { opacity: 0 !important; pointer-events: none; }
   body.is-paused-anim .progress-fill, body.is-paused-anim .music-bar, body.is-paused-anim .mini-bar { animation-play-state: paused !important; }
@@ -100,20 +92,14 @@
     50% { transform: translate(6px, -50%); opacity: 0.8; }
   }
 
-  /* ─── SLIDES BASE ────────────────────────────────── */
   .slide { position: absolute; inset: 0; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
   .slide.active { opacity: 1; pointer-events: all; }
-  .slide-inner {
-    position: absolute; inset: 0; 
-    padding: calc(max(20px, env(safe-area-inset-top)) + 40px) 24px 30px;
-    display: flex; flex-direction: column; overflow: hidden;
-  }
+  .slide-inner { position: absolute; inset: 0; padding: calc(max(20px, env(safe-area-inset-top)) + 40px) 24px 30px; display: flex; flex-direction: column; overflow: hidden; }
 
-  /* ─── TYPOGRAPHY GLOBALS ─────────────────────────── */
   .slide-label { font-size: 10.5px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; font-weight: 600; }
   .slide-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(34px, 10vw, 48px); font-weight: 600; font-style: italic; color: var(--text-title); line-height: 1.1; margin-bottom: 24px; }
 
-  /* ─── SLIDE 0 — COVER ────────────────────────────── */
+  /* SLIDE 0 */
   #slide-0 { background: var(--bg-main); display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 60px; }
   .cover-photo { position: absolute; inset: 0; filter: brightness(0.9) saturate(0.85); }
   .cover-photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, var(--bg-main) 0%, rgba(244,247,246,0.7) 40%, transparent 100%); }
@@ -125,7 +111,7 @@
   .cover-date-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--accent-soft); border: 1px solid var(--accent); border-radius: 100px; padding: 6px 16px; margin-top: 20px; color: var(--text-title); font-size: 11px; letter-spacing: 1px; font-weight: 600; }
   .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--text-title); }
 
-  /* ─── SLIDE 1: THE ARC ───────────────────────────── */
+  /* SLIDE 1 */
   #slide-1 { background: var(--bg-main); }
   .arc-body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
   .arc-phase { display: flex; gap: 14px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--accent-soft); position: relative; }
@@ -138,7 +124,7 @@
   .phase-name { font-family: 'Cormorant Garamond', serif; font-size: 20px; color: var(--text-title); margin-bottom: 4px; font-style: italic; line-height: 1.1; font-weight: 600; }
   .phase-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; font-weight: 400; }
 
-  /* ─── SLIDE 2: PHOTOS ────────────────────────────── */
+  /* SLIDE 2 */
   #slide-2 { background: var(--bg-main); }
   .photo-grid-bg { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr 1fr; gap: 4px; padding: 4px; }
   .photo-cell { overflow: hidden; background: var(--accent-soft); border-radius: 8px; }
@@ -147,7 +133,7 @@
   .moments-title { font-family: 'Cormorant Garamond', serif; font-size: 46px; font-weight: 600; font-style: italic; color: var(--text-title); line-height: 1; margin-bottom: 12px; }
   .moments-sub { font-size: 12px; color: var(--text-muted); font-weight: 400; line-height: 1.5; }
 
-  /* ─── SLIDE 3: EMOJIS ────────────────────────────── */
+  /* SLIDE 3 */
   #slide-3 { background: var(--bg-main); }
   .emoji-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 10px; }
   .emoji-card { background: var(--bg-card); border: 1px solid var(--accent-soft); box-shadow: 0 4px 12px rgba(0,0,0,0.03); border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 6px; position: relative; overflow: hidden; }
@@ -155,7 +141,7 @@
   .emoji-count { font-size: 20px; font-weight: 600; color: var(--accent); letter-spacing: -1px; }
   .emoji-label { font-size: 11px; color: var(--text-muted); font-weight: 400; line-height: 1.35; }
 
-  /* ─── SLIDE 4: NUMBERS ───────────────────────────── */
+  /* SLIDE 4 */
   #slide-4 { background: var(--bg-main); overflow: hidden; }
   .numbers-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
   .num-card { background: var(--bg-card); border: 1px solid var(--accent-soft); box-shadow: 0 4px 12px rgba(0,0,0,0.03); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; justify-content: center; }
@@ -167,7 +153,7 @@
   .mini-bar { flex: 1; border-radius: 2px 2px 0 0; background: linear-gradient(to top, var(--accent), var(--highlight)); opacity: 0.9; transform-origin: bottom; transform: scaleY(0); animation: barUp 1s ease both; }
   @keyframes barUp { to { transform: scaleY(1); } }
 
-  /* ─── SLIDE 5: PATTERNS ──────────────────────────── */
+  /* SLIDE 5 */
   #slide-5 { background: var(--bg-main); }
   .pattern-list { display: flex; flex-direction: column; gap: 12px; flex: 1; justify-content: center; }
   .pattern-item { display: flex; gap: 12px; align-items: flex-start; padding: 14px; border-radius: 14px; background: var(--bg-card); border: 1px solid var(--accent-soft); box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
@@ -175,7 +161,7 @@
   .pattern-name { font-size: 14px; color: var(--text-title); font-weight: 600; margin-bottom: 4px; }
   .pattern-desc { font-size: 12px; color: var(--text-muted); font-weight: 400; line-height: 1.45; }
 
-  /* ─── SLIDE 6: PHRASES ───────────────────────────── */
+  /* SLIDE 6 */
   #slide-6 { background: var(--bg-main); }
   .phrase-bg-art { position: absolute; inset: 0; background: radial-gradient(ellipse at 20% 80%, rgba(240,158,140,0.1), transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(127,161,137,0.1), transparent 50%); }
   .phrase-list { display: flex; flex-direction: column; gap: 14px; flex: 1; justify-content: center; z-index: 2; position: relative;}
@@ -184,7 +170,7 @@
   .phrase-meaning { font-size: 11px; color: var(--text-muted); font-weight: 400; padding-left: 16px; margin-top: 4px; font-style: italic; }
   .phrase-row { display: flex; flex-direction: column; align-items: flex-start; }
 
-  /* ─── SLIDE 7: QUOTES ────────────────────────────── */
+  /* SLIDE 7 */
   #slide-7 { background: var(--bg-main); }
   .quote-slide-inner { position: absolute; inset: 0; padding: calc(max(20px, env(safe-area-inset-top)) + 40px) 0 40px; display: flex; flex-direction: column; }
   .quote-slide-header { padding: 0 24px; margin-bottom: 16px; }
@@ -198,7 +184,7 @@
   .q-sender-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--highlight); }
   .q-sender { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-title); font-weight: 600;}
 
-  /* ─── SLIDE 8: LOVE LETTER ───────────────────────── */
+  /* SLIDE 8 */
   #slide-8 { background: var(--bg-main); }
   .letter-inner { position: absolute; inset: 0; padding: calc(max(20px, env(safe-area-inset-top)) + 40px) 24px 60px; display: flex; flex-direction: column; justify-content: center; }
   .letter-greeting { font-family: 'Cormorant Garamond', serif; font-size: 15px; color: var(--accent); font-style: italic; margin-bottom: 16px; font-weight: 600; }
@@ -209,7 +195,7 @@
   .letter-photo { position: absolute; bottom: 0; right: 0; width: 220px; height: 280px; object-fit: cover; filter: brightness(0.9); mask-image: linear-gradient(to top-left, rgba(0,0,0,0.6) 30%, transparent 100%); -webkit-mask-image: linear-gradient(to top-left, rgba(0,0,0,0.6) 30%, transparent 100%); }
   .center-heart { text-align: left; color: var(--highlight); font-size: 18px; margin: 20px 0; }
 
-  /* ─── ANIMATION IN ───────────────────────────────── */
+  /* ANIMATION */
   .slide.active .anim-in { animation: fadeUp 0.5s cubic-bezier(0.22,1,0.36,1) both; }
   .slide.active .anim-in:nth-child(1) { animation-delay: 0.1s; }
   .slide.active .anim-in:nth-child(2) { animation-delay: 0.2s; }
@@ -217,7 +203,7 @@
   .slide.active .anim-in:nth-child(4) { animation-delay: 0.4s; }
   @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-  /* ─── MUSIC PLAYER ───────────────────────────────── */
+  /* MUSIC PLAYER */
   #music-player {
     position: absolute; bottom: max(24px, env(safe-area-inset-bottom)); 
     left: 50%; transform: translateX(-50%);
@@ -416,9 +402,8 @@
 </div>
 
 <script>
-  // ── SCRIPT ANTI CACHE UNTUK ASSET/GAMBAR ────────────────────────────────
   const urlParams = new URLSearchParams(window.location.search);
-  const version = urlParams.get('v') || new Date().getTime(); // Mengambil ID versi dari URL
+  const version = urlParams.get('v') || new Date().getTime(); 
   
   document.querySelectorAll('[data-asset]').forEach(el => {
     const url = el.getAttribute('data-asset') + '?v=' + version;
@@ -509,58 +494,34 @@
 
   vp.addEventListener('pointerdown', (e) => {
     if(e.target.closest('#music-player')) return;
-
-    ptrStartX = e.clientX;
-    ptrStartY = e.clientY;
-    ptrStartTime = Date.now();
-    
-    isHolding = true;
-    pauseTimer(); 
-    
-    uiHideTimeout = setTimeout(() => {
-      document.body.classList.add('is-hidden-ui');
-    }, 150);
+    ptrStartX = e.clientX; ptrStartY = e.clientY; ptrStartTime = Date.now();
+    isHolding = true; pauseTimer(); 
+    uiHideTimeout = setTimeout(() => { document.body.classList.add('is-hidden-ui'); }, 150);
   });
 
   vp.addEventListener('pointerup', (e) => {
     if(e.target.closest('#music-player')) return;
-    
-    clearTimeout(uiHideTimeout);
-    document.body.classList.remove('is-hidden-ui');
-
+    clearTimeout(uiHideTimeout); document.body.classList.remove('is-hidden-ui');
     if (!isHolding) return;
     isHolding = false;
-
-    const dx = e.clientX - ptrStartX;
-    const dy = e.clientY - ptrStartY;
-    const dt = Date.now() - ptrStartTime;
+    const dx = e.clientX - ptrStartX; const dy = e.clientY - ptrStartY; const dt = Date.now() - ptrStartTime;
 
     if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
       if (dx < 0) nextSlide(); else prevSlide();
-    } 
-    else if (dt < 250) {
+    } else if (dt < 250) {
       const rect = vp.getBoundingClientRect();
-      if (e.clientX - rect.left < rect.width * 0.3) {
-        prevSlide();
-      } else {
-        nextSlide();
-      }
-    } 
-    else {
+      if (e.clientX - rect.left < rect.width * 0.3) prevSlide(); else nextSlide();
+    } else {
       startTimer(timeRemaining);
     }
   });
 
   vp.addEventListener('pointercancel', () => {
-    clearTimeout(uiHideTimeout);
-    document.body.classList.remove('is-hidden-ui');
-    if (isHolding) {
-      startTimer(timeRemaining);
-      isHolding = false;
-    }
+    clearTimeout(uiHideTimeout); document.body.classList.remove('is-hidden-ui');
+    if (isHolding) { startTimer(timeRemaining); isHolding = false; }
   });
 
-  // ── PEMUTAR MUSIK AUTO-PLAY ────────────────────────────
+  // ── PEMUTAR MUSIK ────────────────────────────
   const audio = document.getElementById('bgAudio');
   const musicBtn = document.getElementById('musicBtn');
   const musicPlayer = document.getElementById('music-player');
@@ -568,15 +529,9 @@
 
   function toggleMusic(e) {
     if(e) e.stopPropagation(); 
-    if (!musicStarted) {
-      playAudio();
-      return;
-    }
-    if (musicPlaying) {
-      audio.pause(); musicPlaying = false; setPlaying(false);
-    } else {
-      audio.play(); musicPlaying = true; setPlaying(true);
-    }
+    if (!musicStarted) { playAudio(); return; }
+    if (musicPlaying) { audio.pause(); musicPlaying = false; setPlaying(false); } 
+    else { audio.play(); musicPlaying = true; setPlaying(true); }
   }
 
   function setPlaying(playing) {
@@ -585,17 +540,12 @@
   }
 
   function playAudio() {
-    audio.play().then(() => {
-      musicStarted = true; musicPlaying = true; setPlaying(true);
-    }).catch(()=>{});
+    audio.play().then(() => { musicStarted = true; musicPlaying = true; setPlaying(true); }).catch(()=>{});
   }
 
-  window.addEventListener('pointerup', () => {
-    if(!musicStarted) playAudio();
-  }, { once: true });
+  window.addEventListener('pointerup', () => { if(!musicStarted) playAudio(); }, { once: true });
 
-
-  // ── GRAFIK MINI (SLIDE 4) ──────────────────────────────
+  // ── GRAFIK MINI ──────────────────────────────
   const hourData = [248,431,782,472,547,121,127,401,184,63,180,233,268,274,934,1018,553,14,1,5,5,0];
   function buildHourChart() {
     const c = document.getElementById('hourChart');
