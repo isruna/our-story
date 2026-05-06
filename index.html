@@ -224,9 +224,9 @@
 .letter-right {
   width: 130px;               /* lebar foto */
   flex-shrink: 0;
-  align-self: stretch;
   display: flex;
   align-items: center;
+   align-self: flex-end; 
 }
 
 .letter-photo {
@@ -391,15 +391,16 @@
 .photo-slide .slide-label {
   display: inline-flex;
   align-items: center;
-  align-self: flex-start;                    /* 🆕 mencegah peregangan */
-  background: var(--bg-card);                /* putih */
+  align-self: flex-start;
+  width: fit-content;                    /* 🆕 pastikan shrink ke konten */
+  background: var(--bg-card);
   border: 1px solid var(--accent-soft);
   border-radius: 100px;
   padding: 6px 14px;
   font-size: 10.5px;
   letter-spacing: 3px;
   text-transform: uppercase;
-  color: var(--accent);                      /* hijau */
+  color: var(--accent);
   font-weight: 700;
   box-shadow: 0 2px 8px rgba(0,0,0,0.04);
   margin-bottom: 12px;
@@ -576,20 +577,28 @@
     </div>
 
     <!-- ── SLIDE 10 — LOVE LETTER ──────────────────── -->
-    <div class="slide" id="slide-10">
-      <div class="letter-row">
-        <div class="letter-left anim-in">
-          <div class="letter-greeting">Kepada Ratna &amp; Adis,</div>
-          <div class="letter-body">
+  <div class="slide" id="slide-10">
+  <div class="letter-row">
+    <!-- FOTO DULU → SEKARANG DI KIRI -->
+    <div class="letter-right">
+      <img class="letter-photo" data-asset="assets/image-5.jpeg" alt="">
+    </div>
+    <!-- TEKS SETELAH FOTO → SEKARANG DI KANAN -->
+    <div class="letter-left anim-in">
+      <div class="letter-greeting">Kepada Ratna &amp; Adis,</div>
+      <div class="letter-body">
           Ini bukan sekadar percakapan.<br><br>
           Ini adalah ribuan momen kecil—pagi yang selalu disapa, malam yang tak pernah sepi, seolah tak ada yang terburu-buru karena kalian tahu ke mana arah yang dituju.<br><br>
           Dari "hallo kaa" hingga "sayangku" yang menyimpan kedalaman—<br><br>
-          <em>kamu belajar bahwa cinta bisa dimulai dari hal sekecil Pitagoras.</em>
-         </div>
+          <em>kamu belajar bahwa cinta bisa dimulai dari hal sekecil Pitagoras.</em>  
+      </div>
       <div class="center-heart">♥</div>
       <div class="letter-sig">Adis &amp; Ratna</div>
       <div class="letter-date">April — Mei 2026</div>
     </div>
+  </div>
+</div>
+        
     <div class="letter-right">
       <img class="letter-photo" data-asset="assets/image-5.jpeg" alt="">
     </div>
