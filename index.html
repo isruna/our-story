@@ -1,17 +1,23 @@
---- START OF FILE story.html ---
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<!-- SCRIPT ANTI-CACHE MUTLAK: Memaksa browser me-reload file lokal jika ada perubahan -->
+<!-- 
+  ==============================================================
+  TRIK ANTI-CACHE GITHUB PAGES
+  Script ini akan memaksa URL menambahkan ?v=waktu_saat_ini.
+  Sehingga setiap kali link dibuka, browser mengira ini halaman baru 
+  dan akan mengunduh HTML, CSS, Gambar & Lagu terbaru!
+  ==============================================================
+-->
 <script>
-  if (window.location.protocol === 'file:' && !window.location.search.includes('v=')) {
-    window.location.replace(window.location.href + '?v=' + new Date().getTime());
-  }
+  (function() {
+    var url = new URL(window.location.href);
+    if (!url.searchParams.has('v')) {
+      url.searchParams.set('v', new Date().getTime());
+      window.location.replace(url.toString());
+    }
+  })();
 </script>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -26,9 +32,9 @@
     /* NUANSA FRESH: MATCHA MORNING & PEACH */
     --bg-main: #F4F7F6;      /* Krim putih terang kehijauan */
     --bg-card: #FFFFFF;      /* Putih bersih untuk kotak */
-    --text-title: #1E3325;   /* Hijau gelap (menggantikan putih) */
+    --text-title: #1E3325;   /* Hijau gelap */
     --text-body: #3C5444;    /* Hijau daun redup */
-    --text-muted: #799482;   /* Hijau abu-abu (untuk deskripsi) */
+    --text-muted: #799482;   /* Hijau abu-abu */
     --accent: #7FA189;       /* Hijau Matcha */
     --accent-soft: #D3E0D7;  /* Hijau Matcha sangat pudar */
     --highlight: #F09E8C;    /* Soft Coral / Peach */
@@ -410,18 +416,19 @@
 </div>
 
 <script>
-  // Script ini memastikan gambar dan lagu mengambil versi ter-update!
-  const VERSION_STAMP = new Date().getTime(); 
+  // ── SCRIPT ANTI CACHE UNTUK ASSET/GAMBAR ────────────────────────────────
+  const urlParams = new URLSearchParams(window.location.search);
+  const version = urlParams.get('v') || new Date().getTime(); // Mengambil ID versi dari URL
   
   document.querySelectorAll('[data-asset]').forEach(el => {
-    const url = el.getAttribute('data-asset') + '?v=' + VERSION_STAMP;
+    const url = el.getAttribute('data-asset') + '?v=' + version;
     if (el.tagName === 'AUDIO') el.src = url;
     else el.src = url;
   });
 
   const coverPhoto = document.querySelector('.cover-photo');
   if (coverPhoto) {
-    coverPhoto.style.backgroundImage = "url('assets/image-1.jpeg?v=" + VERSION_STAMP + "')";
+    coverPhoto.style.backgroundImage = "url('assets/image-1.jpeg?v=" + version + "')";
     coverPhoto.style.backgroundSize = "cover";
     coverPhoto.style.backgroundPosition = "center";
   }
