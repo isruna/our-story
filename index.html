@@ -22,25 +22,25 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;1,9..40,300&display=swap" rel="stylesheet">
-<style>
+
+  <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    /* NUANSA FRESH: MATCHA MORNING & PEACH */
-    --bg-main: #F4F7F6;      
-    --bg-card: #FFFFFF;      
-    --text-title: #1E3325;   
-    --text-body: #3C5444;    
-    --text-muted: #799482;   
-    --accent: #7FA189;       
-    --accent-soft: #D3E0D7;  
-    --highlight: #F09E8C;    
-    --sun: #E8C374;          
+    --bg-main: #F4F7F6;
+    --bg-card: #FFFFFF;
+    --text-title: #1E3325;
+    --text-body: #3C5444;
+    --text-muted: #799482;
+    --accent: #7FA189;
+    --accent-soft: #D3E0D7;
+    --highlight: #F09E8C;
+    --sun: #E8C374;
   }
 
   html, body {
     width: 100%; height: 100%; overflow: hidden;
-    background: #E8ECEA; 
+    background: #E8ECEA;
     font-family: 'DM Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
   }
@@ -48,8 +48,8 @@
   #app { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; }
 
   .story-viewport {
-    position: relative; width: 100%; height: 100dvh; max-width: 430px; 
-    overflow: hidden; background: var(--bg-main); touch-action: none; 
+    position: relative; width: 100%; height: 100dvh; max-width: 430px;
+    overflow: hidden; background: var(--bg-main); touch-action: none;
   }
 
   .story-viewport::before {
@@ -116,9 +116,30 @@
 
   /* SLIDE 0: COVER */
   #slide-0 { background: var(--bg-main); display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 60px; }
-  .cover-content { position: relative; z-index: 2; text-align: center; color: var(--text-body); padding: 0 20px; }
+  #slide-0 .cover-content {
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border-radius: 28px;
+    padding: 32px 24px;
+    margin: 0 24px 80px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    color: var(--text-body);
+  }
   .cover-eyebrow { font-size: 10px; letter-spacing: 3.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; font-weight: 600; }
-  .cover-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(54px, 15vw, 76px); font-weight: 600; line-height: 1; font-style: italic; color: var(--text-title); margin-bottom: 8px; }
+  .cover-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(54px, 15vw, 76px);
+    font-weight: 600;
+    line-height: 1;
+    font-style: italic;
+    color: var(--text-title);
+    margin-bottom: 8px;
+    text-shadow: 0 1px 6px rgba(255,255,255,0.9);
+  }
   .cover-and { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 400; color: var(--highlight); margin: 6px 0; }
   .cover-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; margin-top: 24px; font-weight: 400; }
   .cover-date-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--accent-soft); border: 1px solid var(--accent); border-radius: 100px; padding: 6px 16px; margin-top: 20px; color: var(--text-title); font-size: 11px; letter-spacing: 1px; font-weight: 600; }
@@ -139,7 +160,32 @@
 
   /* SLIDES 2, 3, 4: FOTO FULL SCREEN */
   .photo-slide { background: var(--bg-main); }
-  .photo-slide-content { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding: 40px 24px 100px; }
+  .photo-slide-content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 40px 24px 100px;      /* lebih banyak ruang bawah agar tidak tertimpa audio player */
+  }
+  .photo-slide .slide-label {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    width: fit-content;
+    background: var(--bg-card);
+    border: 1px solid var(--accent-soft);
+    border-radius: 100px;
+    padding: 6px 14px;
+    font-size: 10.5px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    margin-bottom: 12px;
+  }
   .moments-title { font-family: 'Cormorant Garamond', serif; font-size: 46px; font-weight: 600; font-style: italic; color: var(--text-title); line-height: 1; margin-bottom: 12px; }
   .moments-sub { font-size: 12px; color: var(--text-body); font-weight: 400; line-height: 1.5; }
 
@@ -194,115 +240,110 @@
   .q-sender-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--highlight); }
   .q-sender { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-title); font-weight: 600;}
 
-/* ── SLIDE 10: LAYOUT KIRI FOTO, KANAN TEKS + ANIMASI SIDE-IMPACT ── */
-#slide-10 {
-  background: var(--bg-main);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: calc(max(24px, env(safe-area-inset-top)) + 16px) 16px 100px;
-}
+  /* SLIDE 10: LOVE LETTER (LAYOUT KIRI FOTO, KANAN TEKS) */
+  #slide-10 {
+    background: var(--bg-main);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: calc(max(24px, env(safe-area-inset-top)) + 16px) 16px 100px;
+  }
 
-.letter-row {
-  display: flex;
-  flex-direction: row;          /* kiri: foto, kanan: teks */
-  gap: 18px;
-  width: 100%;
-  max-width: 400px;
-  height: 100%;
-}
+  .letter-row {
+    display: flex;
+    flex-direction: row;          /* kiri: foto, kanan: teks */
+    gap: 20px;                    /* sedikit lebih longgar */
+    width: 100%;
+    max-width: 420px;
+    height: 100%;
+  }
 
-/* ── Bagian kiri: foto ── */
-.letter-right {
-  width: 120px;
-  flex-shrink: 0;
-  align-self: flex-end;        /* dorong ke bawah */
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-}
+  /* Bagian kiri: foto */
+  .letter-right {
+    width: 160px;                 /* diperbesar dari 120px → 160px */
+    flex-shrink: 0;
+    align-self: flex-end;         /* tetap di bawah */
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
 
-.letter-photo {
-  width: 100%;
-  height: auto;
-  max-height: 320px;
-  object-fit: cover;
-  border-radius: 18px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  .letter-photo {
+    width: 100%;
+    height: auto;
+    max-height: 420px;            /* lebih tinggi */
+    object-fit: cover;
+    border-radius: 18px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
 
-  /* Animasi side-impact setiap kali slide 10 aktif */
-  opacity: 0;
-  transform: translateX(60px);
-  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s,
-              opacity 0.5s ease 0.2s;
-}
+    /* Animasi side-impact setiap kali slide 10 aktif */
+    opacity: 0;
+    transform: translateX(60px);
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s,
+                opacity 0.5s ease 0.2s;
+  }
 
-.slide#slide-10.active .letter-photo {
-  opacity: 1;
-  transform: translateX(0);
-}
+  .slide#slide-10.active .letter-photo {
+    opacity: 1;
+    transform: translateX(0);
+  }
 
-/* ── Bagian kanan: teks ── */
-.letter-left {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-right: 4px;
-}
+  /* Bagian kanan: teks */
+  .letter-left {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-right: 4px;
+  }
 
-/* Gaya teks */
-.letter-greeting {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 14px;
-  color: var(--accent);
-  font-style: italic;
-  margin-bottom: 12px;
-  font-weight: 600;
-}
+  .letter-greeting {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    color: var(--accent);
+    font-style: italic;
+    margin-bottom: 14px;
+    font-weight: 600;
+  }
 
-.letter-body {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 15px;
-  line-height: 1.45;
-  color: var(--text-body);
-  margin-bottom: 16px;
-}
+  .letter-body {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    line-height: 1.45;
+    color: var(--text-body);
+    margin-bottom: 18px;
+  }
 
-.letter-body em {
-  font-style: italic;
-  color: var(--text-title);
-  font-weight: 600;
-}
+  .letter-body em {
+    font-style: italic;
+    color: var(--text-title);
+    font-weight: 600;
+  }
 
-.center-heart {
-  font-size: 18px;
-  color: var(--highlight);
-  margin: 8px 0 6px;
-}
+  .center-heart {
+    font-size: 20px;
+    color: var(--highlight);
+    margin: 10px 0 6px;
+  }
 
-.letter-sig {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 26px;
-  font-style: italic;
-  font-weight: 600;
-  color: var(--text-title);
-  line-height: 1.1;
-}
+  .letter-sig {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-style: italic;
+    font-weight: 600;
+    color: var(--text-title);
+    line-height: 1.1;
+  }
 
-.letter-date {
-  font-size: 10px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
+  .letter-date {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
 
-/* Animasi pada blok kiri */
-.letter-left.anim-in {
-  animation: fadeUp 0.5s cubic-bezier(0.22,1,0.36,1) both;
-  animation-delay: 0.1s;
-}
   /* ANIMATION */
   .slide.active .anim-in { animation: fadeUp 0.5s cubic-bezier(0.22,1,0.36,1) both; }
   .slide.active .anim-in:nth-child(1) { animation-delay: 0.1s; }
@@ -313,7 +354,7 @@
 
   /* MUSIC PLAYER */
   #music-player {
-    position: absolute; bottom: max(24px, env(safe-area-inset-bottom)); 
+    position: absolute; bottom: max(24px, env(safe-area-inset-bottom));
     left: 50%; transform: translateX(-50%);
     z-index: 200; display: flex; align-items: center; gap: 8px;
     background: rgba(255,255,255,0.9); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
@@ -335,40 +376,6 @@
   @keyframes bar1 { from { height: 3px; } to { height: 12px; } }
   @keyframes bar2 { from { height: 8px; } to { height: 3px; } }
   @keyframes bar3 { from { height: 2px; } to { height: 10px; } }
-  /* ── SLIDE 0: COVER – perkuat kontras teks ───── */
-#slide-0 .cover-content {
-  background: rgba(255, 255, 255, 0.45);   /* lebih transparan */
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  border-radius: 28px;
-  padding: 32px 24px;
-  margin: 0 24px 80px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.04);
-  position: relative;
-  z-index: 3;
-}
-
-
-  /* Label slide di slide foto (2,3,4) – lebih kontras di atas gambar */
-/* Label di slide foto – sekarang berbentuk chip putih */
-.photo-slide .slide-label {
-  display: inline-flex;
-  align-items: center;
-  align-self: flex-start;
-  width: fit-content;                    /* 🆕 pastikan shrink ke konten */
-  background: var(--bg-card);
-  border: 1px solid var(--accent-soft);
-  border-radius: 100px;
-  padding: 6px 14px;
-  font-size: 10.5px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--accent);
-  font-weight: 700;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-  margin-bottom: 12px;
-}
-  
 </style>
 </head>
 <body>
