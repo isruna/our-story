@@ -194,17 +194,102 @@
   .q-sender-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--highlight); }
   .q-sender { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-title); font-weight: 600;}
 
-  /* SLIDE 10: LOVE LETTER */
-  #slide-10 { background: var(--bg-main); }
-  .letter-inner { position: absolute; inset: 0; padding: calc(max(20px, env(safe-area-inset-top)) + 40px) 24px 60px; display: flex; flex-direction: column; justify-content: center; }
-  .letter-greeting { font-family: 'Cormorant Garamond', serif; font-size: 15px; color: var(--accent); font-style: italic; margin-bottom: 16px; font-weight: 600; }
-  .letter-body { font-family: 'Cormorant Garamond', serif; font-size: 18px; line-height: 1.6; color: var(--text-body); font-weight: 400; margin-bottom: 30px; position: relative; z-index: 2;}
-  .letter-body em { font-style: italic; color: var(--text-title); font-weight: 600; }
-  .letter-sig { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-style: italic; font-weight: 600; color: var(--text-title); line-height: 1.1; margin-bottom: 6px; }
-  .letter-date { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); }
-  .letter-photo { position: absolute; bottom: 0; right: 0; width: 220px; height: 280px; object-fit: cover; filter: brightness(0.9); mask-image: linear-gradient(to top-left, rgba(0,0,0,0.6) 30%, transparent 100%); -webkit-mask-image: linear-gradient(to top-left, rgba(0,0,0,0.6) 30%, transparent 100%); }
-  .center-heart { text-align: left; color: var(--highlight); font-size: 18px; margin: 20px 0; }
+/* ── SLIDE 10: LAYOUT BARU KIRI-TEKS KANAN-FOTO ── */
+#slide-10 {
+  background: var(--bg-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(max(24px, env(safe-area-inset-top)) + 20px) 20px 100px;
+}
 
+.letter-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+  max-width: 400px;
+  height: 100%;
+}
+
+.letter-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0; /* agar teks bisa menyusut */
+}
+
+.letter-right {
+  width: 130px;               /* lebar foto */
+  flex-shrink: 0;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+}
+
+.letter-photo {
+  width: 100%;
+  height: auto;
+  max-height: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+  /* HAPUS mask-image, HAPUS filter brightness */
+}
+
+/* Gaya teks tetap sama */
+.letter-greeting {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  color: var(--accent);
+  font-style: italic;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.letter-body {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text-body);
+  margin-bottom: 20px;
+}
+
+.letter-body em {
+  font-style: italic;
+  color: var(--text-title);
+  font-weight: 600;
+}
+
+.center-heart {
+  font-size: 20px;
+  color: var(--highlight);
+  margin: 12px 0 8px;
+}
+
+.letter-sig {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 30px;
+  font-style: italic;
+  font-weight: 600;
+  color: var(--text-title);
+  line-height: 1.1;
+}
+
+.letter-date {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* Animasi pada blok kiri */
+.letter-left.anim-in {
+  animation: fadeUp 0.5s cubic-bezier(0.22,1,0.36,1) both;
+  animation-delay: 0.1s;
+}
   /* ANIMATION */
   .slide.active .anim-in { animation: fadeUp 0.5s cubic-bezier(0.22,1,0.36,1) both; }
   .slide.active .anim-in:nth-child(1) { animation-delay: 0.1s; }
@@ -239,13 +324,13 @@
   @keyframes bar3 { from { height: 2px; } to { height: 10px; } }
   /* ── SLIDE 0: COVER – perkuat kontras teks ───── */
 #slide-0 .cover-content {
-  background: rgba(255, 255, 255, 0.92);   /* hampir solid, tetap sedikit transparan */
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.65);   /* lebih transparan */
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   border-radius: 28px;
-  padding: 36px 28px;
-  margin: 0 24px 80px;                     /* turunkan agar tidak menempel bawah */
-  box-shadow: 0 12px 32px rgba(0,0,0,0.06);
+  padding: 32px 24px;
+  margin: 0 24px 80px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.04);
   position: relative;
   z-index: 3;
 }
@@ -302,19 +387,21 @@
 }
 
   /* Label slide di slide foto (2,3,4) – lebih kontras di atas gambar */
+/* Label di slide foto – sekarang berbentuk chip putih */
 .photo-slide .slide-label {
-  font-size: 12px;                     /* sedikit lebih besar */
-  color: var(--accent);
-  text-shadow: 0 2px 8px rgba(0,0,0,0.6), 0 0 4px rgba(0,0,0,0.4);
-  letter-spacing: 3.5px;
-  font-weight: 700;
-  background: rgba(0,0,0,0.2);         /* bayangan halus di belakang teks */
-  display: inline-block;
-  padding: 4px 14px;
-  border-radius: 6px;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  margin-bottom: 10px;
+  display: inline-flex;
+  align-items: center;
+  background: var(--bg-card);                /* putih */
+  border: 1px solid var(--accent-soft);
+  border-radius: 100px;                      /* pil penuh */
+  padding: 6px 16px;
+  font-size: 10.5px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text-title);                  /* hijau gelap, kontras */
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  margin-bottom: 12px;
 }
 </style>
 </head>
@@ -489,20 +576,24 @@
 
     <!-- ── SLIDE 10 — LOVE LETTER ──────────────────── -->
     <div class="slide" id="slide-10">
-      <img class="letter-photo" data-asset="assets/image-5.jpeg" alt="" onerror="this.style.display='none'">
-      <div class="letter-inner">
-        <div class="letter-greeting anim-in">Kepada Ratna &amp; Adis,</div>
-        <div class="letter-body anim-in">
+      <div class="letter-row">
+        <div class="letter-left anim-in">
+          <div class="letter-greeting">Kepada Ratna &amp; Adis,</div>
+          <div class="letter-body">
           Ini bukan sekadar percakapan.<br><br>
           Ini adalah ribuan momen kecil—pagi yang selalu disapa, malam yang tak pernah sepi, seolah tak ada yang terburu-buru karena kalian tahu ke mana arah yang dituju.<br><br>
           Dari "hallo kaa" hingga "sayangku" yang menyimpan kedalaman—<br><br>
           <em>kamu belajar bahwa cinta bisa dimulai dari hal sekecil Pitagoras.</em>
-        </div>
-        <div class="center-heart anim-in">♥</div>
-        <div class="letter-sig anim-in">Adis &amp; Ratna</div>
-        <div class="letter-date anim-in">April — Mei 2026</div>
-      </div>
+         </div>
+      <div class="center-heart">♥</div>
+      <div class="letter-sig">Adis &amp; Ratna</div>
+      <div class="letter-date">April — Mei 2026</div>
     </div>
+    <div class="letter-right">
+      <img class="letter-photo" data-asset="assets/image-5.jpeg" alt="">
+    </div>
+  </div>
+</div>
 
     <!-- MUSIC PLAYER -->
     <audio id="bgAudio" preload="auto" loop data-asset="assets/song.mp3"></audio>
