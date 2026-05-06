@@ -240,18 +240,18 @@
   .q-sender-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--highlight); }
   .q-sender { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-title); font-weight: 600;}
 
-  /* SLIDE 10: LOVE LETTER — GAMBAR BACKGROUND PENUH, TEKS DI ATAS KARTU */
+ /* ── SLIDE 10: GAMBAR PENUH + TEKS DI ATAS (TANPA KARTU) ── */
 #slide-10 {
+  position: relative;
   background: var(--bg-main);
-  position: relative;               /* penting untuk anak absolute */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: calc(max(24px, env(safe-area-inset-top)) + 20px) 20px 100px;
   overflow: hidden;
+  display: flex;
+  align-items: flex-end;              /* teks menempel ke bawah */
+  justify-content: flex-start;
+  padding: 0 20px 100px;              /* aman dari music player */
 }
 
-/* Foto dijadikan background absolut */
+/* Foto full‑screen absolute */
 .letter-right {
   position: absolute;
   inset: 0;
@@ -261,10 +261,10 @@
 .letter-photo {
   width: 100%;
   height: 100%;
-  object-fit: cover;                /* penuhi tanpa distorsi */
+  object-fit: cover;                  /* penuh, tanpa distorsi */
   display: block;
 
-  /* Animasi side‑impact tetap ada: slide dari kanan sekaligus fade */
+  /* Animasi meluncur + fade */
   opacity: 0;
   transform: translateX(40px);
   transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.15s,
@@ -276,58 +276,54 @@
   transform: translateX(0);
 }
 
-/* Kartu putih di atas gambar untuk teks */
+/* Kontainer teks – tidak ada background kartu */
 .letter-left {
   position: relative;
   z-index: 2;
-  background: rgba(255, 255, 255, 0.92);   /* hampir solid, sedikit transparan */
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-radius: 24px;
-  padding: 30px 24px;
-  max-width: 340px;
   width: 100%;
-  box-shadow: 0 12px 32px rgba(0,0,0,0.08);
-  text-align: left;
-  /* animasi fadeup sudah ada dari .anim-in */
+  max-width: 360px;
+  padding: 0 4px;
+
+  /* Gradien hitam tipis di bawah untuk melindungi teks */
+  background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.2) 70%, transparent 100%);
+  border-radius: 16px 16px 16px 16px;  /* sudut halus (opsional) */
+  padding: 40px 20px 30px;             /* beri ruang dalam */
 }
 
-/* Gaya teks di dalam kartu (sama seperti sebelumnya, sedikit disesuaikan) */
+/* Seluruh teks dibuat putih bersih */
+.letter-left,
+.letter-greeting,
+.letter-body,
+.letter-body em,
+.center-heart,
+.letter-sig,
+.letter-date {
+  color: #ffffff !important;          /* paksa putih */
+  text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+}
+
+/* Gaya font tetap elegan */
 .letter-greeting {
-  font-family: 'Cormorant Garamond', serif;
   font-size: 15px;
-  color: var(--accent);
-  font-style: italic;
-  margin-bottom: 12px;
   font-weight: 600;
+  margin-bottom: 10px;
 }
 
 .letter-body {
-  font-family: 'Cormorant Garamond', serif;
   font-size: 16px;
   line-height: 1.5;
-  color: var(--text-body);
-  margin-bottom: 16px;
-}
-
-.letter-body em {
-  font-style: italic;
-  color: var(--text-title);
-  font-weight: 600;
+  margin-bottom: 14px;
 }
 
 .center-heart {
   font-size: 20px;
-  color: var(--highlight);
-  margin: 12px 0 8px;
+  margin: 10px 0 6px;
+  color: var(--highlight) !important; /* hati tetap merah muda untuk aksen */
 }
 
 .letter-sig {
-  font-family: 'Cormorant Garamond', serif;
   font-size: 28px;
-  font-style: italic;
   font-weight: 600;
-  color: var(--text-title);
   line-height: 1.1;
 }
 
@@ -335,8 +331,13 @@
   font-size: 11px;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: var(--text-muted);
   margin-top: 4px;
+}
+
+/* Animasi fadeUp dari .anim-in tetap jalan */
+.letter-left.anim-in {
+  animation: fadeUp 0.5s cubic-bezier(0.22,1,0.36,1) both;
+  animation-delay: 0.2s;
 }
 
   /* ANIMATION */
