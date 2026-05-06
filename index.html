@@ -237,6 +237,56 @@
   @keyframes bar1 { from { height: 3px; } to { height: 12px; } }
   @keyframes bar2 { from { height: 8px; } to { height: 3px; } }
   @keyframes bar3 { from { height: 2px; } to { height: 10px; } }
+  /* ── SLIDE 0: COVER – perkuat kontras teks ───── */
+#slide-0 .cover-content {
+  background: rgba(255, 255, 255, 0.85); /* layer putih semi‑transparan */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 24px;
+  padding: 30px 24px;
+  margin: 0 20px 60px;             /* naikkan dari bawah */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+/* ── SLIDE 10: LOVE LETTER – blok tanda tangan ─ */
+#slide-10 .letter-inner {
+  padding-bottom: 100px;           /* beri ruang lebih agar tidak menumpuk foto */
+}
+
+#slide-10 .letter-photo {
+  z-index: -1;                     /* pastikan foto di belakang teks */
+}
+
+#slide-10 .center-heart {
+  margin: 24px 0 12px;
+  font-size: 22px;
+  color: var(--highlight);
+  background: rgba(244,247,246,0.8); /* background samar supaya teks terbaca */
+  display: inline-block;
+  padding: 6px 20px;
+  border-radius: 12px;
+}
+
+#slide-10 .letter-sig {
+  margin-bottom: 8px;
+  background: rgba(244,247,246,0.8);
+  display: inline-block;
+  padding: 0 16px;
+  border-radius: 10px;
+  color: var(--text-title);
+}
+
+#slide-10 .letter-date {
+  color: var(--text-title);         /* lebih gelap daripada muted */
+  opacity: 0.7;
+  background: rgba(244,247,246,0.8);
+  display: inline-block;
+  padding: 2px 14px;
+  border-radius: 8px;
+}
+  #slide-0 .cover-title {
+  text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
 </style>
 </head>
 <body>
@@ -426,7 +476,7 @@
     </div>
 
     <!-- MUSIC PLAYER -->
-    <audio id="bgAudio" preload="auto" loop></audio>
+    <audio id="bgAudio" preload="auto" loop data-asset="assets/song.mp3"></audio>
     <div id="music-player" class="ui-element paused">
       <div class="music-btn" id="musicBtn" onclick="toggleMusic(event)" title="Play / Pause">▶</div>
       <div class="music-info">
