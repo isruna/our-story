@@ -4,6 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Adis & Ratna — A Month in Messages</title>
+<meta name="version" content="1.0.0">
+<script>
+  // Cache-busting — bump VERSION string on every update to force hard reload
+  const VERSION = "1.0.0";
+  const stored = localStorage.getItem("app_version");
+  if (stored !== VERSION) {
+    localStorage.setItem("app_version", VERSION);
+    if (stored !== null) window.location.reload(true);
+  }
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;1,9..40,300&display=swap" rel="stylesheet">
@@ -454,6 +464,51 @@
     color: rgba(255,255,255,0.3); font-size: 14px;
   }
 
+
+  /* ─── MUSIC PLAYER ───────────────────────────────── */
+  #music-player {
+    position: absolute; bottom: 44px; left: 50%; transform: translateX(-50%);
+    z-index: 200;
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(20,10,4,0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(200,134,74,0.2);
+    border-radius: 100px;
+    padding: 8px 16px 8px 10px;
+    transition: opacity 0.4s ease;
+    white-space: nowrap;
+  }
+  #music-player.hidden { opacity: 0; pointer-events: none; }
+  .music-btn {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(200,134,74,0.15);
+    border: 1px solid rgba(200,134,74,0.3);
+    color: var(--accent); font-size: 13px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; flex-shrink: 0;
+    transition: background 0.2s;
+    user-select: none;
+  }
+  .music-btn:hover { background: rgba(200,134,74,0.28); }
+  .music-info { display: flex; flex-direction: column; gap: 2px; }
+  .music-title { font-size: 11px; color: var(--cream); letter-spacing: 0.3px; }
+  .music-bars {
+    display: flex; align-items: flex-end; gap: 2px; height: 10px;
+  }
+  .music-bar {
+    width: 2px; background: var(--accent); border-radius: 1px; opacity: 0.7;
+    animation-play-state: running;
+  }
+  .music-bar:nth-child(1) { height: 10px; animation: bar1 0.8s ease-in-out infinite alternate; }
+  .music-bar:nth-child(2) { height: 6px;  animation: bar2 0.6s ease-in-out infinite alternate; }
+  .music-bar:nth-child(3) { height: 9px;  animation: bar3 0.9s ease-in-out infinite alternate; }
+  .music-bar:nth-child(4) { height: 4px;  animation: bar1 0.7s ease-in-out infinite alternate; }
+  @keyframes bar1 { from { height: 3px; } to { height: 10px; } }
+  @keyframes bar2 { from { height: 8px; } to { height: 3px; } }
+  @keyframes bar3 { from { height: 2px; } to { height: 9px; } }
+  #music-player.paused .music-bar { animation-play-state: paused; height: 4px !important; }
+
   /* ─── PHOTO PLACEHOLDER ──────────────────────────── */
   .photo-placeholder {
     width: 100%; height: 100%;
@@ -497,7 +552,7 @@
         <img src="assets/image-1.jpeg" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'">
       </div>
       <div class="cover-content">
-        <div class="cover-eyebrow anim-in">A love story in data</div>
+        <div class="cover-eyebrow anim-in">satu bulan yang mengubah segalanya</div>
         <div class="cover-title anim-in">Adis<br>&amp;<br>Ratna</div>
         <div class="cover-sub anim-in">6.930 pesan · 32 hari · satu kisah</div>
         <div class="cover-date-badge anim-in">
@@ -611,7 +666,7 @@
     <div class="slide" id="slide-3">
       <div class="slide-inner">
         <div class="slide-label anim-in">Bahasa Kita</div>
-        <div class="slide-title anim-in">Emosi<br>dalam Simbol</div>
+        <div class="slide-title anim-in">Emosi<br>yang Terkirim</div>
         <div class="emoji-grid anim-in">
           <div class="emoji-card">
             <div class="emoji-big">😭</div>
@@ -650,31 +705,31 @@
     <!-- ── SLIDE 4 — NUMBERS ──────────────────────── -->
     <div class="slide" id="slide-4">
       <div class="slide-inner">
-        <div class="slide-label anim-in">Data Cinta</div>
-        <div class="slide-title anim-in">Angka yang<br>Punya Rasa</div>
+        <div class="slide-label anim-in">Kalau dihitung</div>
+        <div class="slide-title anim-in">Betapa<br>Seringnya<br>Kita</div>
         <div class="numbers-grid anim-in">
           <div class="num-card">
             <div class="num-big">6.930</div>
             <div class="num-unit">pesan</div>
-            <div class="num-desc">Dalam 32 hari — rata-rata 217 pesan setiap harinya</div>
+            <div class="num-desc">Dalam 32 hari. Tidak pernah ada hari yang sunyi di antara kalian</div>
           </div>
           <div class="num-card">
             <div class="num-big">32</div>
             <div class="num-unit">hari</div>
-            <div class="num-desc">5 Apr — 6 Mei 2026. Tidak ada satu hari pun tanpa kabar</div>
+            <div class="num-desc">5 Apr — 6 Mei. Setiap hari, tanpa terkecuali</div>
           </div>
           <div class="num-card">
             <div class="num-big">423</div>
-            <div class="num-unit">rekor</div>
-            <div class="num-desc">Pesan terbanyak dalam sehari, 15 April</div>
+            <div class="num-unit">pesan</div>
+            <div class="num-desc">Hari paling cerewet sedunia — 15 April</div>
           </div>
           <div class="num-card">
             <div class="num-big">47</div>
             <div class="num-unit">"makasih"</div>
-            <div class="num-desc">Rasa syukur yang tidak pernah lupa diucapkan</div>
+            <div class="num-desc">Karena rasa syukur tidak pernah perlu alasan</div>
           </div>
           <div class="num-card wide">
-            <div class="num-unit" style="margin-bottom:4px;">Jam paling aktif — malam & pagi</div>
+            <div class="num-unit" style="margin-bottom:4px;">Waktu favorit — pagi dan malam hari</div>
             <div class="mini-chart" id="hourChart"></div>
             <div style="display:flex;justify-content:space-between;margin-top:4px;">
               <span style="font-size:9px;color:rgba(245,237,224,0.3);">05.00</span>
@@ -846,13 +901,29 @@
         <div class="letter-greeting anim-in">Kepada Ratna &amp; Adis,</div>
         <div class="letter-body anim-in">
           Ini bukan sekadar percakapan.<br><br>
-          Ini adalah <em>6.930 momen kecil</em> — pagi yang selalu disapa, malam yang tak pernah sepi, dan rasa yang tumbuh pelan-pelan, seolah tak ada yang terburu-buru karena keduanya sudah tahu ke mana arah yang dituju.<br><br>
+          Ini adalah ribuan momen kecil — pagi yang selalu disapa, malam yang tak pernah sepi, dan rasa yang tumbuh pelan-pelan, seolah tak ada yang terburu-buru karena keduanya sudah tahu ke mana arah yang dituju.<br><br>
           Dari "hallo kaa" yang sederhana, hingga "sayangku" yang menyimpan kedalaman —<br><br>
           <em>sebulan ini, kamu belajar bahwa cinta bisa dimulai dari hal sekecil Pitagoras.</em>
         </div>
         <div class="center-heart anim-in">♥</div>
         <div class="letter-sig anim-in">Adis &amp; Ratna</div>
         <div class="letter-date anim-in">April — Mei 2026</div>
+      </div>
+    </div>
+
+
+    <!-- MUSIC PLAYER -->
+    <audio id="bgAudio" src="assets/song.mp3" loop preload="none"></audio>
+    <div id="music-player" class="paused">
+      <div class="music-btn" id="musicBtn" onclick="toggleMusic()" title="Play / Pause">▶</div>
+      <div class="music-info">
+        <div class="music-title">Our Song</div>
+        <div class="music-bars">
+          <div class="music-bar"></div>
+          <div class="music-bar"></div>
+          <div class="music-bar"></div>
+          <div class="music-bar"></div>
+        </div>
       </div>
     </div>
 
@@ -980,6 +1051,53 @@
       if (dx < 0) nextSlide(); else prevSlide();
     }
   }, { passive: true });
+
+
+  // ── MUSIC ──────────────────────────────────────────
+  const audio = document.getElementById('bgAudio');
+  const musicBtn = document.getElementById('musicBtn');
+  const musicPlayer = document.getElementById('music-player');
+  let musicStarted = false;
+  let musicPlaying = false;
+
+  function toggleMusic() {
+    if (!musicStarted) {
+      audio.play().then(() => {
+        musicStarted = true;
+        musicPlaying = true;
+        setPlaying(true);
+      }).catch(() => {});
+      return;
+    }
+    if (musicPlaying) {
+      audio.pause();
+      musicPlaying = false;
+      setPlaying(false);
+    } else {
+      audio.play();
+      musicPlaying = true;
+      setPlaying(true);
+    }
+  }
+
+  function setPlaying(playing) {
+    musicBtn.textContent = playing ? '⏸' : '▶';
+    musicPlayer.classList.toggle('paused', !playing);
+  }
+
+  // Auto-play on first user interaction with the story
+  function tryAutoPlay() {
+    if (musicStarted) return;
+    audio.play().then(() => {
+      musicStarted = true;
+      musicPlaying = true;
+      setPlaying(true);
+    }).catch(() => {
+      // Browser blocked autoplay — player stays in paused state, user taps ▶
+    });
+  }
+  document.querySelector('.story-viewport').addEventListener('click', tryAutoPlay, { once: true });
+  document.querySelector('.story-viewport').addEventListener('touchend', tryAutoPlay, { once: true });
 
   // Init
   goTo(0);
