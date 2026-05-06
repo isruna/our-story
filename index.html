@@ -139,7 +139,7 @@
 
   /* SLIDES 2, 3, 4: FOTO FULL SCREEN */
   .photo-slide { background: var(--bg-main); }
-  .photo-slide-content { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding: 40px 24px 60px; }
+  .photo-slide-content { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding: 40px 24px 100px; }
   .moments-title { font-family: 'Cormorant Garamond', serif; font-size: 46px; font-weight: 600; font-style: italic; color: var(--text-title); line-height: 1; margin-bottom: 12px; }
   .moments-sub { font-size: 12px; color: var(--text-body); font-weight: 400; line-height: 1.5; }
 
@@ -246,17 +246,22 @@
   padding: 30px 24px;
   margin: 0 20px 60px;             /* naikkan dari bawah */
   box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  padding-bottom: 30px;
 }
 
 /* ── SLIDE 10: LOVE LETTER – blok tanda tangan ─ */
 #slide-10 .letter-inner {
-  padding-bottom: 100px;           /* beri ruang lebih agar tidak menumpuk foto */
+  padding-bottom: 120px;           /* beri ruang lebih agar tidak menumpuk foto */
 }
 
 #slide-10 .letter-photo {
-  z-index: -1;                     /* pastikan foto di belakang teks */
+  z-index: 1;                       /* jangan negatif */
+  bottom: 20px;                     /* sedikit naik dari bawah */
+  right: 0;
+  width: 210px;
+  height: 270px;
+  opacity: 0.35;                    /* transparan agar teks tetap terbaca */
 }
-
 #slide-10 .center-heart {
   margin: 24px 0 12px;
   font-size: 22px;
